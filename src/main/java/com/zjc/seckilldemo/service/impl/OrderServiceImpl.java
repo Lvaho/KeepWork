@@ -1,6 +1,7 @@
 package com.zjc.seckilldemo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 
@@ -15,10 +16,12 @@ import com.zjc.seckilldemo.service.IGoodsService;
 import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.service.ISeckillGoodsService;
 import com.zjc.seckilldemo.service.ISeckillOrderService;
+import com.zjc.seckilldemo.util.JsonUtil;
 import com.zjc.seckilldemo.vo.GoodsVo;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
 import com.zjc.seckilldemo.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
@@ -43,14 +46,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private OrderMapper orderMapper;
     @Autowired
     private ISeckillOrderService seckillOrderService;
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Override
     public Order seckill(User user, GoodsVo goods) {
         //秒杀商品表减库存
         SeckillGoods seckillGoods = seckillGoodsService.getOne(new
                 QueryWrapper<SeckillGoods>().eq("goods_id",
                 goods.getId()));
-        seckillGoods.setStockCount(seckillGoods.getStockCount()-1);
-        seckillGoodsService.updateById(seckillGoods);
+        seckillGoods.setStockCount(seckillGoods.getStockCount() - 1);
+        boolean result = seckillGoodsService.update(new UpdateWrapper<SeckillGoods>().setSql("stock_count = " +
+                "stock_count-1").eq(
+                "goods_id", goods.getId()).gt("stock_count", 0));
+        // seckillGoodsService.updateById(seckillGoods);
+        if (!result){
+            return null;
+        }
         //生成订单
         Order order = new Order();
         order.setUserId(user.getId());
@@ -69,6 +80,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         seckillOrder.setUserId(user.getId());
         seckillOrder.setGoodsId(goods.getId());
         seckillOrderService.save(seckillOrder);
+        redisTemplate.opsForValue().set("order:" + user.getId() + ":" +
+                        goods.getId(),
+                JsonUtil.object2JsonStr(seckillOrder));
         return order;
     }
     /**
@@ -76,7 +90,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @param orderId
      * @return
      */
-
     @Override
     public OrderDetailVo detail(Integer orderId) {
         if (null==orderId){
