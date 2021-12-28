@@ -11,4 +11,5 @@ public class SeckillDemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(SeckillDemoApplication.class, args);
     }
+    //test
 }
