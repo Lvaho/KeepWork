@@ -47,4 +47,3 @@ public class MQReceiver {
         orderService.seckill(user, goods);
     }
 }
-
