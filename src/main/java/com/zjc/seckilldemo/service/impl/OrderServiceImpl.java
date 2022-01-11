@@ -17,6 +17,8 @@ import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.service.ISeckillGoodsService;
 import com.zjc.seckilldemo.service.ISeckillOrderService;
 import com.zjc.seckilldemo.util.JsonUtil;
+import com.zjc.seckilldemo.util.MD5Util;
+import com.zjc.seckilldemo.util.UUIDUtil;
 import com.zjc.seckilldemo.vo.GoodsVo;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
 import com.zjc.seckilldemo.vo.RespBeanEnum;
@@ -25,7 +27,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -103,6 +108,37 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         detail.setGoodsVo(goodsVo);
         detail.setOrder(order);
         return detail;
+    }
+
+    /**
+     * 验证请求地址
+     *
+     * @param user
+     * @param goodsId
+     * @param path
+     * @return
+     */
+    @Override
+    public boolean checkPath(User user, Integer goodsId, String path) {
+        if (user==null || StringUtils.isEmpty(path)){
+            return false;
+        }
+        String redisPath = (String) redisTemplate.opsForValue().get("seckillPath:" + user.getId() + ":" + goodsId);
+        return path.equals(redisPath);
+    }
+
+    /**
+     * 生成秒杀地址
+     *
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    @Override
+    public String createPath(User user, Integer goodsId) {
+        String str = MD5Util.md5(UUIDUtil.uuid() + "123456");
+        redisTemplate.opsForValue().set("seckillPath:" + user.getId() + ":" + goodsId, str, 60, TimeUnit.SECONDS);
+        return str;
     }
 
 

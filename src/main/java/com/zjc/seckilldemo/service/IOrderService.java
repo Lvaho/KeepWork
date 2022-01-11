@@ -28,5 +28,19 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     OrderDetailVo detail(Integer orderId);
-
+    /**
+     * 验证秒杀地址
+     * @param user
+     * @param goodsId
+     * @param path
+     * @return
+     */
+    boolean checkPath(User user, Integer goodsId, String path);
+    /**
+     * 生成秒杀地址
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    String createPath(User user, Integer goodsId);
 }

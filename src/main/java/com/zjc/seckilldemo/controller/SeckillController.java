@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,7 +48,7 @@ public class SeckillController implements InitializingBean {
     @Autowired
     private MQSender mqSender;
     @Autowired
-    private RedisScript<Integer> script;
+    private RedisScript<Long> script;
 
 
     private Map<Integer, Boolean> EmptyStockMap = new HashMap<>();
@@ -90,7 +91,8 @@ public class SeckillController implements InitializingBean {
         }
         //预减库存
         //Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
-        Integer stock = (Integer) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
+        Long stocklong = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
+        int stock=stocklong.intValue();
         if (stock < 0) {
             EmptyStockMap.put(goodsId,true);
             valueOperations.increment("seckillGoods:" + goodsId);
@@ -130,6 +132,23 @@ public class SeckillController implements InitializingBean {
         }
         Integer orderId = seckillOrderService.getResult(user, goodsId);
         return RespBean.success(orderId);
+    }
+
+    /**
+     * 获取秒杀地址
+     *
+     * @param user
+     * @param goodsId
+     * @return
+     */
+    @RequestMapping(value = "/path", method = RequestMethod.GET)
+    @ResponseBody
+    public RespBean getPath(User user, Integer goodsId) {
+        if (user == null) {
+            return RespBean.error(RespBeanEnum.SESSION_ERROR);
+        }
+        String str = orderService.createPath(user,goodsId);
+        return RespBean.success(str);
     }
 }
 

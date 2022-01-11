@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.List;
+
 /**
  * Redis配置类
  */
@@ -33,11 +35,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public DefaultRedisScript<Integer> script() {
-        DefaultRedisScript<Integer> redisScript = new DefaultRedisScript<>();
+    public DefaultRedisScript<Long> script() {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
         //放在和application.yml 同层目录下
         redisScript.setLocation(new ClassPathResource("stock.lua"));
-        redisScript.setResultType(Integer.class);
+        redisScript.setResultType(Long.class);
         return redisScript;
     }
 
