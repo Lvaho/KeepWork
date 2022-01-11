@@ -52,12 +52,17 @@ public class SeckillController implements InitializingBean {
 
 
     private Map<Integer, Boolean> EmptyStockMap = new HashMap<>();
-    @ApiOperation(value = "秒杀操作 传参为用户和商品ID")
-    @RequestMapping(value = "/doSeckill", method = RequestMethod.POST)
+    @ApiOperation(value = "秒杀操作 传参为用户和商品ID 还有接口隐藏之后的接口路径")
+    @RequestMapping(value = "/{path}/doSeckill", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doSeckill(User user, Integer goodsId) {
+    public RespBean doSeckill(@PathVariable String path, User user, Integer goodsId) {
         if (user == null) {
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
+        }
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        boolean check = orderService.checkPath(user,goodsId,path);
+        if (!check){
+            return RespBean.error(RespBeanEnum.REQUEST_ILLEGAL);
         }
         /*GoodsVo goods = goodsService.findGoodsVoByGoodsId(goodsId);
         //判断库存
@@ -78,7 +83,7 @@ public class SeckillController implements InitializingBean {
             return RespBean.success(order);
         }
         return RespBean.error(RespBeanEnum.ERROR);*/
-        ValueOperations valueOperations = redisTemplate.opsForValue();
+
         //判断是否重复抢购
         String seckillOrderJson = (String) valueOperations.get("order:" +
                 user.getId() + ":" + goodsId);
