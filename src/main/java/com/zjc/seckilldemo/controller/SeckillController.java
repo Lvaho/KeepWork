@@ -1,7 +1,7 @@
 package com.zjc.seckilldemo.controller;
 
 
-import com.zjc.seckilldemo.pojo.Order;
+import com.zjc.seckilldemo.validation.AccessLimit;
 
 import com.zjc.seckilldemo.pojo.SeckillMessage;
 import com.zjc.seckilldemo.pojo.User;
@@ -146,6 +146,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return
      */
+    @AccessLimit(second=5,maxCount=5,needLogin=true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody
     public RespBean getPath(User user, Integer goodsId) {

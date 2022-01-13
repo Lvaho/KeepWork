@@ -125,9 +125,4 @@ public class GoodsController {
         detailVo.setSecKillStatus(secKillStatus);
         return RespBean.success(detailVo);
     }
-
-
-
-
-
 }

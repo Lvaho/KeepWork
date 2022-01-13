@@ -22,7 +22,8 @@ public enum RespBeanEnum {
     EMPTY_STOCK(500501,"库存不足"),
     REPEATE_ERROR(500502,"不能重复秒杀"),
     ORDER_NOT_EXIST(500503,"订单不存在"),
-    REQUEST_ILLEGAL(500504,"非法请求");
+    REQUEST_ILLEGAL(500504,"非法请求"),
+    ACCESS_LIMIT_REACHED(500505,"请求次数过多请稍后再试");
     private final Integer code;
     private final String message;
 }
