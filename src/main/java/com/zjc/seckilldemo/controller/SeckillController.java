@@ -1,6 +1,7 @@
 package com.zjc.seckilldemo.controller;
 
 
+import cn.wildfirechat.sdk.AdminConfig;
 import com.zjc.seckilldemo.validation.AccessLimit;
 
 import com.zjc.seckilldemo.pojo.SeckillMessage;
