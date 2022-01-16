@@ -1,7 +1,7 @@
 package com.zjc.seckilldemo;
 
 import cn.wildfirechat.sdk.AdminConfig;
-import com.zjc.seckilldemo.util.UserUtil;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

@@ -50,9 +50,9 @@ public class SeckillController implements InitializingBean {
     private MQSender mqSender;
     @Autowired
     private RedisScript<Long> script;
-
-
     private Map<Integer, Boolean> EmptyStockMap = new HashMap<>();
+
+
     @ApiOperation(value = "秒杀操作 传参为用户和商品ID 还有接口隐藏之后的接口路径")
     @RequestMapping(value = "/{path}/doSeckill", method = RequestMethod.POST)
     @ResponseBody
@@ -157,5 +157,60 @@ public class SeckillController implements InitializingBean {
         String str = orderService.createPath(user,goodsId);
         return RespBean.success(str);
     }
+
+
+
+    @RequestMapping(value = "/doSeckill", method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean doSeckillfortest(User user, Integer goodsId) {
+        if (user == null) {
+            return RespBean.error(RespBeanEnum.SESSION_ERROR);
+        }
+        ValueOperations valueOperations = redisTemplate.opsForValue();
+        /*GoodsVo goods = goodsService.findGoodsVoByGoodsId(goodsId);
+        //判断库存
+        if (goods.getStockCount() < 1) {
+            return RespBean.error(RespBeanEnum.EMPTY_STOCK);
+        }
+        //判断是否重复抢购
+        // SeckillOrder seckillOrder = seckillOrderService.getOne(newQueryWrapper<SeckillOrder>().eq("user_id",
+                //       user.getId()).eq(
+                //       "goods_id",
+                //       goodsId));
+        String seckillOrderJson = (String) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
+        if (!StringUtils.isEmpty(seckillOrderJson)) {
+            return RespBean.error(RespBeanEnum.REPEATE_ERROR);
+        }
+        Order order = orderService.seckill(user, goods);
+        if (null != order) {
+            return RespBean.success(order);
+        }
+        return RespBean.error(RespBeanEnum.ERROR);*/
+
+        //判断是否重复抢购
+        String seckillOrderJson = (String) valueOperations.get("order:" +
+                user.getId() + ":" + goodsId);
+        if (!StringUtils.isEmpty(seckillOrderJson)) {
+            return RespBean.error(RespBeanEnum.REPEATE_ERROR);
+        }
+        //内存标记,减少Redis访问
+        if (EmptyStockMap.get(goodsId)) {
+            return RespBean.error(RespBeanEnum.EMPTY_STOCK);
+        }
+        //预减库存
+        Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
+        //Long stocklong = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
+        //int stock=stocklong.intValue();
+        if (stock < 0L) {
+            EmptyStockMap.put(goodsId,true);
+            valueOperations.increment("seckillGoods:" + goodsId);
+            return RespBean.error(RespBeanEnum.EMPTY_STOCK);
+        }
+        // 请求入队，立即返回排队中
+        SeckillMessage message = new SeckillMessage(user, goodsId);
+        mqSender.sendsecKillMessage(JsonUtil.object2JsonStr(message));
+        return RespBean.success(0);
+    }
+
 }
 
