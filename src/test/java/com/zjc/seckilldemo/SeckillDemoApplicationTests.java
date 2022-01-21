@@ -5,6 +5,7 @@ import com.zjc.seckilldemo.mapper.OrderMapper;
 import com.zjc.seckilldemo.mapper.UserMapper;
 import com.zjc.seckilldemo.pojo.Order;
 import com.zjc.seckilldemo.pojo.User;
+import com.zjc.seckilldemo.rocketmq.MessageSender;
 import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.util.UserUtil;
 import org.checkerframework.checker.units.qual.A;
@@ -23,9 +24,12 @@ private OrderMapper orderMapper;
 @Autowired
   private   GoodsMapper goodsMapper;
 
-private UserUtil userUtil;
+    private MessageSender messageSender;
+
+    private UserUtil userUtil;
     @Test
     void contextLoads() throws Exception {
+
 
     }
 }
