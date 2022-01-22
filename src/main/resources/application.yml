@@ -103,6 +103,6 @@ mybatis-plus:
 
 
 # MyBatis SQL打印(方法接口所在的包，不是Mapper.xml所在的包)
-logging:
-  level:
-    com.zjc.seckilldemo.mapper: debug
+#logging:
+#  level:
+#    com.zjc.seckilldemo.mapper: debug

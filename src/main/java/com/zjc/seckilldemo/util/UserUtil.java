@@ -99,15 +99,15 @@ public class UserUtil {
         System.out.println("over");
     }
     private static Connection getConn() throws Exception {
-        String url = "jdbc:mysql://sh-cynosdbmysql-grp-qvwb8kos.sql.tencentcdb.com:27224/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai";
-        String username = "lvaho";
-        String password = "zjkd4566K8";
+        String url = "jdbc:mysql://localhost:3306/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai";
+        String username = "root";
+        String password = "123";
         String driver = "com.mysql.cj.jdbc.Driver";
         Class.forName(driver);
         return DriverManager.getConnection(url, username, password);
     }
     public static void main(String[] args) throws Exception {
-        createUser(300);
+        createUser(500);
     }
 
 }

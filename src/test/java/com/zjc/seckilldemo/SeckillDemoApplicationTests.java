@@ -23,13 +23,17 @@ class SeckillDemoApplicationTests {
 private OrderMapper orderMapper;
 @Autowired
   private   GoodsMapper goodsMapper;
-
+@Autowired
     private MessageSender messageSender;
 
     private UserUtil userUtil;
     @Test
     void contextLoads() throws Exception {
-
-
+      int i =0;
+      while (i<100){
+        messageSender.sendMessage("123");
+        i++;
+      }
     }
+
 }
