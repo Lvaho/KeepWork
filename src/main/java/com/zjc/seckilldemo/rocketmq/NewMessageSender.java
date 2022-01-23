@@ -11,6 +11,5 @@ public class NewMessageSender {
     private RocketMQTemplate rocketMQTemplate;
     public void SendMessage(String msg){
         rocketMQTemplate.convertAndSend("TopicTest",msg);
-        System.out.println("sendMsg"+msg);
     }
 }
