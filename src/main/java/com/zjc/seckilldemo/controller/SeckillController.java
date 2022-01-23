@@ -3,6 +3,7 @@ package com.zjc.seckilldemo.controller;
 
 import cn.wildfirechat.sdk.AdminConfig;
 import com.zjc.seckilldemo.rocketmq.MessageSender;
+import com.zjc.seckilldemo.rocketmq.NewMessageSender;
 import com.zjc.seckilldemo.validation.AccessLimit;
 
 import com.zjc.seckilldemo.pojo.SeckillMessage;
@@ -52,7 +53,7 @@ public class SeckillController implements InitializingBean {
     @Autowired
     private RedisScript<Long> script;
     @Autowired
-    private MessageSender messageSender;
+    private NewMessageSender messageSender;
     private Map<Integer, Boolean> EmptyStockMap = new HashMap<>();
 
 
@@ -212,7 +213,7 @@ public class SeckillController implements InitializingBean {
         // 请求入队，立即返回排队中
         SeckillMessage message = new SeckillMessage(user, goodsId);
         //mqSender.sendsecKillMessage(JsonUtil.object2JsonStr(message));
-        messageSender.sendMessage(JsonUtil.object2JsonStr(message));
+        messageSender.SendMessage(JsonUtil.object2JsonStr(message));
         return RespBean.success(0);
     }
 
