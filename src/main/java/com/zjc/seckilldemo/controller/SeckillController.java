@@ -1,9 +1,7 @@
 package com.zjc.seckilldemo.controller;
 
 
-import cn.wildfirechat.sdk.AdminConfig;
-import com.zjc.seckilldemo.rocketmq.MessageSender;
-import com.zjc.seckilldemo.rocketmq.NewMessageSender;
+import com.zjc.seckilldemo.rocketmq.RocketMessageSender;
 import com.zjc.seckilldemo.validation.AccessLimit;
 
 import com.zjc.seckilldemo.pojo.SeckillMessage;
@@ -53,7 +51,7 @@ public class SeckillController implements InitializingBean {
     @Autowired
     private RedisScript<Long> script;
     @Autowired
-    private NewMessageSender messageSender;
+    private RocketMessageSender messageSender;
     private Map<Integer, Boolean> EmptyStockMap = new HashMap<>();
 
 

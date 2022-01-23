@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NewMessageSender {
+public class RocketMessageSender {
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
     public void SendMessage(String msg){

@@ -107,7 +107,7 @@ public class UserUtil {
         return DriverManager.getConnection(url, username, password);
     }
     public static void main(String[] args) throws Exception {
-        createUser(500);
+        createUser(5000);
     }
 
 }

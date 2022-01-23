@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 @Component
 @RocketMQMessageListener(topic="TopicTest",consumerGroup = "defaultconsumer")
-public class NewMessageReceiver implements RocketMQListener<String> {
+public class RocketMessageReceiver implements RocketMQListener<String> {
     @Autowired
     private IGoodsService goodsService;
     @Autowired
