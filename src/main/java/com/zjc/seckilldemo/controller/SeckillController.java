@@ -6,7 +6,6 @@ import com.zjc.seckilldemo.validation.AccessLimit;
 
 import com.zjc.seckilldemo.pojo.SeckillMessage;
 import com.zjc.seckilldemo.pojo.User;
-import com.zjc.seckilldemo.rabbitmq.MQSender;
 import com.zjc.seckilldemo.service.IGoodsService;
 import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.service.ISeckillOrderService;
@@ -46,8 +45,6 @@ public class SeckillController implements InitializingBean {
     private IOrderService orderService;
     @Autowired
     private RedisTemplate redisTemplate;
-    @Autowired
-    private MQSender mqSender;
     @Autowired
     private RedisScript<Long> script;
     @Autowired
@@ -108,7 +105,7 @@ public class SeckillController implements InitializingBean {
         }
         // 请求入队，立即返回排队中
         SeckillMessage message = new SeckillMessage(user, goodsId);
-        mqSender.sendsecKillMessage(JsonUtil.object2JsonStr(message));
+        messageSender.SendMessage(JsonUtil.object2JsonStr(message));
         return RespBean.success(0);
     }
 

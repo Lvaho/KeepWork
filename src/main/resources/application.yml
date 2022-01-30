@@ -1,28 +1,4 @@
 spring:
-  #RabbitMQ
-  rabbitmq:
-    #服务器地址
-    host: 127.0.0.1
-    #用户名
-    username: guest
-    #密码
-    password: guest1
-    #虚拟主机
-    virtual-host: /
-    #端口
-    port: 5672
-    listener:
-      simple:
-        #消费者最小数量
-        concurrency: 10
-        #消费者最大数量
-        max-concurrency: 10
-        #限制消费者每次只处理一条消息，处理完再继续下一条消息
-        prefetch: 1
-        #启动时是否默认启动容器，默认true
-        auto-startup: true
-        #被拒绝时重新进入队列
-        default-requeue-rejected: true
     template:
       retry:
         #发布重试，默认false
@@ -40,9 +16,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #jdbc:mysql://sh-cynosdbmysql-grp-qvwb8kos.sql.tencentcdb.com:27224/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    url: jdbc:mysql://127.0.0.1:3306/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123
+    url: jdbc:mysql://sh-cynosdbmysql-grp-qvwb8kos.sql.tencentcdb.com:27224/seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: lvaho
+    password: zjkd4566K8
     hikari:
       #连接池名
       pool-name: DateHikariCP
@@ -107,6 +83,6 @@ mybatis-plus:
 #  level:
 #    com.zjc.seckilldemo.mapper: debug
 rocketmq:
-  name-server: 192.168.10.8:9876
+  name-server: 127.0.0.1:9876
   producer:
     group: group1
