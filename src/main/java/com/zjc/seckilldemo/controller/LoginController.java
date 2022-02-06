@@ -42,6 +42,10 @@ public class LoginController {
         return userService.login(request, response, loginVo);
     }
 
-
+    @ApiOperation(value = "登陆后页面")
+    @RequestMapping("/logined")
+    public String Logined(){
+        return "logined";
+    }
 
 }
