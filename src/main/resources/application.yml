@@ -1,5 +1,5 @@
 spring:
-    template:
+  template:
       retry:
         #发布重试，默认false
         enabled: true
@@ -83,6 +83,6 @@ mybatis-plus:
 #  level:
 #    com.zjc.seckilldemo.mapper: debug
 rocketmq:
-  name-server: 127.0.0.1:9876
+  name-server: 110.40.190.110:9876
   producer:
     group: group1

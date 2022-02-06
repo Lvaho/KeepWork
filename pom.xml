@@ -124,6 +124,7 @@
             <artifactId>protobuf-java</artifactId>
             <version>2.5.0</version>
         </dependency>
+        <!--野火IM javaSDK-->
         <dependency>
             <groupId>cn.wildfirechat</groupId>
             <artifactId>sdk</artifactId>
@@ -138,7 +139,7 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/lib/common-0.81.jar</systemPath>
         </dependency>
-        <!--
+        <!-- 废弃的rocketMQ
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
@@ -146,6 +147,7 @@
         </dependency>
         -->
         <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-spring-boot-starter -->
+        <!--RocketMQ 依赖-->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-spring-boot-starter</artifactId>
@@ -155,7 +157,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-
+        <!--支付宝支付-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-easysdk</artifactId>
+            <version>2.2.1</version>
+        </dependency>
     </dependencies>
 
     <build>
