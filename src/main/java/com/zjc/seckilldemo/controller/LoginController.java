@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo.controller;
 
+import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.vo.LoginVo;
 import com.zjc.seckilldemo.vo.RespBean;
@@ -8,8 +9,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.model.IModel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +47,9 @@ public class LoginController {
 
     @ApiOperation(value = "登陆后页面")
     @RequestMapping("/logined")
-    public String Logined(){
+    public String Logined(Model model, User user){
+        String name = user.getNickname();
+        model.addAttribute("name",name);
         return "logined";
     }
 

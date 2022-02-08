@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo;
 
+import com.zjc.seckilldemo.mapper.DepositMapper;
 import com.zjc.seckilldemo.mapper.GoodsMapper;
 import com.zjc.seckilldemo.mapper.OrderMapper;
 import com.zjc.seckilldemo.mapper.UserMapper;
@@ -20,10 +21,10 @@ class SeckillDemoApplicationTests {
 private OrderMapper orderMapper;
 @Autowired
   private   GoodsMapper goodsMapper;
-
+@Autowired
+private DepositMapper depositMapper;
 @Autowired
 private RocketMessageSender rocketMessageSender;
-    private UserUtil userUtil;
     @Test
     void contextLoads() throws Exception {
 
