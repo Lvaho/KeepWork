@@ -9,6 +9,7 @@ import com.zjc.seckilldemo.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -30,7 +31,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
-    @RequestMapping("/detail")
+    @RequestMapping(value = "/detail",method = RequestMethod.GET)
     @ResponseBody
     public RespBean detail(User user, Integer orderId){
         if (null==user){

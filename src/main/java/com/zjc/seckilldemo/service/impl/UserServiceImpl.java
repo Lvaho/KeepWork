@@ -103,11 +103,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
         user.setPassword(MD5Util.formPassToDBPass(password, user.getSalt()));
         user.setIdentity(identity);
         if (userMapper.selectUserByIdentity(identity) != null){
-            throw new GlobalException(RespBeanEnum.ID_ALREADY_REGISTER);
+            return RespBean.error(RespBeanEnum.ID_ALREADY_REGISTER);
         }else if(userMapper.selectById(mobile) != null) {
-            throw new GlobalException(RespBeanEnum.MOBILE_ALREADY_REGISTER);
+            return RespBean.error(RespBeanEnum.MOBILE_ALREADY_REGISTER);
         }else {userMapper.insert(user);}
-        return RespBean.success();
+        return RespBean.success("注册成功");
     }
 }
 

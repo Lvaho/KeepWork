@@ -52,7 +52,7 @@ public class SeckillController implements InitializingBean {
     private Map<Integer, Boolean> EmptyStockMap = new HashMap<>();
 
 
-    @ApiOperation(value = "秒杀操作 传参为用户和商品ID 还有接口隐藏之后的接口路径")
+    @ApiOperation(value = "安全秒杀接口，需要先获取路径")
     @RequestMapping(value = "/{path}/doSeckill", method = RequestMethod.POST)
     @ResponseBody
     public RespBean doSeckill(@PathVariable String path, User user, Integer goodsId) {
@@ -158,7 +158,7 @@ public class SeckillController implements InitializingBean {
     }
 
 
-
+    @ApiOperation("为压力测试留下的无路径参数秒杀接口")
     @RequestMapping(value = "/doSeckill", method = RequestMethod.POST)
     @ResponseBody
     public RespBean doSeckillfortest(User user, Integer goodsId) throws Exception {

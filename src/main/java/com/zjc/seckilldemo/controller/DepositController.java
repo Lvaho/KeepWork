@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * <p>
@@ -23,8 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DepositController {
     @Autowired
     private DepositMapper depositMapper;
+
     @ApiOperation(value = "余额界面")
-    @RequestMapping("/toDeposit")
+    @RequestMapping(value = "/toDeposit",method = RequestMethod.GET)
     public String todeposit(Model model, User user){
         String identity = user.getIdentity();
         String name = user.getNickname();

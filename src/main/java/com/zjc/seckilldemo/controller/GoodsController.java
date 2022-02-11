@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -49,7 +50,7 @@ public class GoodsController {
      *
      * @return
      */
-    @RequestMapping(value = "/toList", produces = "text/html;charset=utf-8")
+    @RequestMapping(value = "/toList", produces = "text/html;charset=utf-8",method = RequestMethod.GET)
     @ResponseBody
     public String toLogin(HttpServletRequest request, HttpServletResponse
             response, Model model, User user) {
@@ -78,7 +79,7 @@ public class GoodsController {
      * @return
      */
     @ApiOperation(value = "获取秒杀商品")
-    @RequestMapping("/getGoods")
+    @RequestMapping(value = "/getGoods",method = RequestMethod.GET)
     @ResponseBody
     public List<GoodsVo> getGoods(Model model, User user) {
         return goodsService.findGoodsVo();
@@ -93,7 +94,7 @@ public class GoodsController {
      * @param goodsId
      * @return
      */
-    @RequestMapping(value = "/detail/{goodsId}")
+    @RequestMapping(value = "/detail/{goodsId}",method = RequestMethod.GET)
     @ResponseBody
     public RespBean toDetail(HttpServletRequest request, HttpServletResponse
             response, Model model, User user,

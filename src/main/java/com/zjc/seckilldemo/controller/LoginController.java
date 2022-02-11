@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.model.IModel;
 
@@ -26,7 +27,7 @@ public class LoginController {
     @Autowired
     private IUserService userService;
     @ApiOperation(value = "前往网页版登录界面")
-    @RequestMapping("toLogin")
+    @RequestMapping(value = "toLogin",method = RequestMethod.GET)
     public String toLogin(){
         return "login";
     }
@@ -38,7 +39,7 @@ public class LoginController {
      * @return
      */
     @ApiOperation(value = "登录操作 传的密码为经过md5加密加盐的形式 如：用户密码123456 先经过加盐处理变成 12123456c3 再经过MD5加密")
-    @RequestMapping("/doLogin")
+    @RequestMapping(value = "/doLogin",method = RequestMethod.POST)
     @ResponseBody
     public RespBean doLogin(HttpServletRequest request, HttpServletResponse response, @Valid LoginVo loginVo) {
         log.info(loginVo.toString());
@@ -46,7 +47,7 @@ public class LoginController {
     }
 
     @ApiOperation(value = "登陆后页面")
-    @RequestMapping("/logined")
+    @RequestMapping(value = "/logined",method = RequestMethod.GET)
     public String Logined(Model model, User user){
         String name = user.getNickname();
         model.addAttribute("name",name);
