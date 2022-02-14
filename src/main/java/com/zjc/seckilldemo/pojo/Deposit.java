@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -23,7 +24,7 @@ public class Deposit implements Serializable {
 
     private String identity;
 
-    private String deposit;
+    private BigDecimal deposit;
 
 
 }

@@ -13,4 +13,5 @@ import com.zjc.seckilldemo.pojo.Deposit;
  */
 public interface DepositMapper extends BaseMapper<Deposit> {
    Deposit findDepositByIdentity(String identity);
+   int updateDepositByIdentity(Deposit deposit);
 }

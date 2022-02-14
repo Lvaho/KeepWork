@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<!-- jquery -->
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<!-- bootstrap -->
+<link rel="stylesheet" type="text/css"
+      th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}">
+</script>
+<!-- jquery-validator -->
+<script type="text/javascript" th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
+<script type="text/javascript" th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
+<!-- layer -->
+<script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+<!-- common.js -->
+<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>充值界面</title>
+</head>
+<body>
+<p style="text-align: center" th:text="'欢迎'+${name}+'进入充值界面'">未获取到用户信息，请登录</p>
+<div style="text-align: center;height: fit-content">
+    <select>
+        <option value ="zhifubao">支付宝</option>
+    </select>
+</div>
+<div style="text-align: center;height: fit-content">
+    <p>请输入要充值的金额 金额需要大于0 单位：元 </p>
+    <input id="money" name="money" type="number" placeholder="单位:元" required="true" >
+</div>
+<div style="text-align: center">
+    <button style="width: fit-content" type="submit" onclick="recharge()">确定并跳转支付</button>
+</div>
+</body>
+</html>
+<script>
+    function recharge() {
+        $.ajax({
+            url: "/deposit/doRecharge",
+            type: "POST",
+            data: {
+                chargenum: $("#money").val()
+            },
+            success: function (data) {
+                if (data != "ERROR"){
+                    const div = document.createElement('div');
+                    div.innerHTML = data; // html code
+                    document.body.appendChild(div);
+                    document.forms[0].submit();
+                }else {
+                    layer.msg("出错了")
+                }
+            },
+            error: function () {
+                layer.msg("出现错误，请稍后再试")
+            }
+        });
+    }
+</script>

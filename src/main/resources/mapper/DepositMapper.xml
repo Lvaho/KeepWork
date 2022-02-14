@@ -18,4 +18,12 @@
     FROM t_deposit
     WHERE identity = #{identity}
 </select>
+
+    <update id="updateDepositByIdentity" parameterType="com.zjc.seckilldemo.pojo.Deposit">
+        UPDATE t_deposit
+        <set>
+            <if test="deposit != null">deposit = #{deposit}</if>
+        </set>
+        WHERE identity = #{identity }
+    </update>
 </mapper>
