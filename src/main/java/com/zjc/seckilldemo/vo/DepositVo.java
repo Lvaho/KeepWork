@@ -10,5 +10,4 @@ public class DepositVo {
     private BigDecimal total = BigDecimal.ZERO;
     //充值账号的身份证
     private String identity;
-
 }

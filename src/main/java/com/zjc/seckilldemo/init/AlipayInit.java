@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AlipayInit implements ApplicationRunner {
 
+    //公钥
+    @Value("${alipay.publicKey}")
+    public String publicKey;
+
     //应用id
     @Value("${alipay.appId}")
     private String appId;
@@ -18,10 +22,6 @@ public class AlipayInit implements ApplicationRunner {
     @Value("${alipay.privateKey}")
     private String privateKey;
 
-    //公钥
-    @Value("${alipay.publicKey}")
-    private String publicKey;
-
     //支付宝网关
     @Value("${alipay.gateway}")
     private String gateway;
@@ -29,6 +29,7 @@ public class AlipayInit implements ApplicationRunner {
     //支付成功后的接口回调地址，不是回调的友好页面，不要弄混了
     @Value("${alipay.notifyUrl}")
     private String notifyUrl;
+
 
     /**
      *  项目初始化事件

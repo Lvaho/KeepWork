@@ -30,6 +30,7 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
     @Value("${alipay.returnUrl}")
     private String returnUrl;
 
+
     @Override
     public int recharge(DepositVo depositVo) {
         String identity = depositVo.getIdentity();
@@ -44,10 +45,18 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
 
     @Override
     public String SendRequestToAlipay(DepositVo depositVo) throws Exception{
+        String orderNo = OrderUtil.getOrderNo();
+        String identity = depositVo.getIdentity();
         AlipayTradePagePayResponse response = Factory
                 .Payment
                 .Page()
-                .pay(depositVo.getIdentity(), OrderUtil.getOrderNo(),depositVo.getTotal().toString(),returnUrl);
+                .pay(identity+"充值", orderNo,depositVo.getTotal().toString(),returnUrl);
+        createOrder(depositVo,orderNo);
         return response.body;
+    }
+
+    @Override
+    public void createOrder(DepositVo depositVo,String orderNo) {
+        depositMapper.createOrder(depositVo,orderNo);
     }
 }

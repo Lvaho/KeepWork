@@ -15,4 +15,5 @@ import com.zjc.seckilldemo.vo.DepositVo;
 public interface IDepositService extends IService<Deposit> {
     public int recharge(DepositVo depositVo);
     public String SendRequestToAlipay(DepositVo depositVo) throws Exception;
+    public void createOrder(DepositVo depositVo,String orderNo);
 }

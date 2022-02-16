@@ -24,6 +24,10 @@
         <set>
             <if test="deposit != null">deposit = #{deposit}</if>
         </set>
-        WHERE identity = #{identity }
+        WHERE identity = #{identity}
     </update>
+    <insert id="createOrder">
+    INSERT INTO t_deposit_order(out_trade_no,total_amount,identity,status)
+    VALUES (#{orderNo},#{depositVo.total},#{depositVo.identity},"1")
+</insert>
 </mapper>

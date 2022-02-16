@@ -37,7 +37,6 @@ private IDepositService depositService;
         DepositVo depositVo = new DepositVo();
         depositVo.setTotal(BigDecimal.valueOf(20));
         depositVo.setIdentity("123");
-        System.out.println(depositService.SendRequestToAlipay(depositVo));
 
 
     }
