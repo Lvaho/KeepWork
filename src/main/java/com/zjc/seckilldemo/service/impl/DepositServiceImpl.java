@@ -50,7 +50,7 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
         AlipayTradePagePayResponse response = Factory
                 .Payment
                 .Page()
-                .pay(identity+"充值", orderNo,depositVo.getTotal().toString(),returnUrl);
+                .pay(identity, orderNo,depositVo.getTotal().toString(),returnUrl);
         createOrder(depositVo,orderNo);
         return response.body;
     }
