@@ -10,6 +10,7 @@ import com.zjc.seckilldemo.service.IDepositService;
 import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.util.UserUtil;
 import com.zjc.seckilldemo.vo.DepositVo;
+import com.zjc.seckilldemo.vo.RechargeOrderVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,9 +35,11 @@ private RocketMessageSender rocketMessageSender;
 private IDepositService depositService;
     @Test
     void contextLoads() throws Exception {
-        DepositVo depositVo = new DepositVo();
-        depositVo.setTotal(BigDecimal.valueOf(20));
-        depositVo.setIdentity("123");
+DepositVo depositVo=new DepositVo();
+depositVo.setIdentity("123");
+depositVo.setTotal(new BigDecimal(132));
+System.out.println(depositService.SendRequestToAlipay(depositVo));
+
 
 
     }
