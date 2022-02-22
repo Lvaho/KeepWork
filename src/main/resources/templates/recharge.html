@@ -44,13 +44,14 @@
                 chargenum: $("#money").val()
             },
             success: function (data) {
-                if (data != "ERROR"){
+                layer.closeAll();
+                if (data.code == 200) {
                     const div = document.createElement('div');
-                    div.innerHTML = data; // html code
+                    div.innerHTML = data.obj; // html code
                     document.body.appendChild(div);
                     document.forms[0].submit();
-                }else {
-                    layer.msg("出错了")
+                } else {
+                    layer.msg(data.message);
                 }
             },
             error: function () {

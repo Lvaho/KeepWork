@@ -23,7 +23,9 @@ public enum RespBeanEnum {
     REPEATE_ERROR(500502,"不能重复秒杀"),
     ORDER_NOT_EXIST(500503,"订单不存在"),
     REQUEST_ILLEGAL(500504,"非法请求"),
-    ACCESS_LIMIT_REACHED(500505,"请求次数过多请稍后再试");
+    ACCESS_LIMIT_REACHED(500505,"请求次数过多请稍后再试"),
+    //余额模块
+    CHARGENUM_SMALLER_THAN_ZERO(500601,"充值金额小于0");
     private final Integer code;
     private final String message;
 }

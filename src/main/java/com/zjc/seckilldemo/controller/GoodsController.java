@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 商品
  *
- * @author zhoubin
+ * @author lvaho
  * @since 1.0.0
  */
 @Controller
@@ -73,6 +73,7 @@ public class GoodsController {
         }
         return html;
     }
+
     /**
      * 获取秒杀商品
      *

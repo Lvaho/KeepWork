@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo;
 
+import com.alipay.easysdk.payment.common.models.AlipayTradeQueryResponse;
 import com.zjc.seckilldemo.mapper.DepositMapper;
 import com.zjc.seckilldemo.mapper.GoodsMapper;
 import com.zjc.seckilldemo.mapper.OrderMapper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 
 @SpringBootTest
 class SeckillDemoApplicationTests {
@@ -35,13 +37,7 @@ private RocketMessageSender rocketMessageSender;
 private IDepositService depositService;
     @Test
     void contextLoads() throws Exception {
-DepositVo depositVo=new DepositVo();
-depositVo.setIdentity("123");
-depositVo.setTotal(new BigDecimal(132));
-System.out.println(depositService.SendRequestToAlipay(depositVo));
-
-
-
+        System.out.println();
     }
 
 }
