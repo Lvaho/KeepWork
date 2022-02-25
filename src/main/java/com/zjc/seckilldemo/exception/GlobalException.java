@@ -11,4 +11,3 @@ import lombok.NoArgsConstructor;
 public class GlobalException extends RuntimeException {
     private RespBeanEnum respBeanEnum;
 }
-

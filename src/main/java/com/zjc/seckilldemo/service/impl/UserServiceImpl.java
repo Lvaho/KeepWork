@@ -5,10 +5,7 @@ import com.zjc.seckilldemo.exception.GlobalException;
 import com.zjc.seckilldemo.mapper.UserMapper;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IUserService;
-import com.zjc.seckilldemo.util.CookieUtil;
-import com.zjc.seckilldemo.util.JsonUtil;
-import com.zjc.seckilldemo.util.MD5Util;
-import com.zjc.seckilldemo.util.UUIDUtil;
+import com.zjc.seckilldemo.util.*;
 import com.zjc.seckilldemo.vo.LoginVo;
 import com.zjc.seckilldemo.vo.RespBean;
 import com.zjc.seckilldemo.vo.RespBeanEnum;
@@ -53,8 +50,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
             throw new GlobalException(RespBeanEnum.LOGINVO_ERROR);
         }
         //校验密码
-        if (!MD5Util.formPassToDBPass(password,
+        if (!SM3Util.formPassToDBPass(password,
                 user.getSalt()).equals(user.getPassword())) {
+            System.out.println(SM3Util.formPassToDBPass(password,user.getSalt()));
+            System.out.println(user.getPassword());
             throw new GlobalException(RespBeanEnum.LOGINVO_ERROR);
         }
         //生成cookie

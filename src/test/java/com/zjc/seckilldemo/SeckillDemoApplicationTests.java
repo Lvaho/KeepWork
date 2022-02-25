@@ -9,6 +9,7 @@ import com.zjc.seckilldemo.pojo.Deposit;
 import com.zjc.seckilldemo.rocketmq.RocketMessageSender;
 import com.zjc.seckilldemo.service.IDepositService;
 import com.zjc.seckilldemo.service.IUserService;
+import com.zjc.seckilldemo.util.SM3Util;
 import com.zjc.seckilldemo.util.UserUtil;
 import com.zjc.seckilldemo.vo.DepositVo;
 import com.zjc.seckilldemo.vo.RechargeOrderVo;
@@ -37,7 +38,7 @@ private RocketMessageSender rocketMessageSender;
 private IDepositService depositService;
     @Test
     void contextLoads() throws Exception {
-        System.out.println();
+
     }
 
 }

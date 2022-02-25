@@ -81,6 +81,3 @@ public class AccessInterceptor implements HandlerInterceptor {
         return userService.getByUserTicket(ticket, request, response);
     }
 }
-
-
-

@@ -98,12 +98,12 @@ public class DepositController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/checkOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/checkOrder",method = RequestMethod.GET)
     public String checkOrder(String out_trade_no) throws Exception {
             return depositService.checkOrderAndrecharge(out_trade_no);
     }
 
-    @RequestMapping(value = "/receiveArsycMsg")
+    @RequestMapping(value = "/receiveArsycMsg",method = RequestMethod.POST)
     @ResponseBody
     public String receiveArsycMsg(HttpServletRequest request) {
         Map<String, String> params = convertRequestParamsToMap(request);
