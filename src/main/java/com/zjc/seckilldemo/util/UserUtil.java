@@ -31,7 +31,7 @@ public class UserUtil {
             user.setNickname("user" + i);
             user.setRegisterDate(new Date());
             user.setSalt("1a2b3c4d");
-            user.setPassword(MD5Util.inputPassToDbPass("123456", user.getSalt()));
+            user.setPassword(SM3Util.inputPassToDbPass("123456", user.getSalt()));
             user.setIdentity("testsfz"+String.valueOf(i));
             users.add(user);
         }
@@ -72,7 +72,7 @@ public class UserUtil {
             co.setDoOutput(true);
             OutputStream out = co.getOutputStream();
             String params = "mobile=" + user.getId() + "&password=" +
-                    MD5Util.inputPassToFormPass("123456");
+                    SM3Util.inputPassToFormPass("123456");
             out.write(params.getBytes());
             out.flush();
             InputStream inputStream = co.getInputStream();
@@ -107,7 +107,7 @@ public class UserUtil {
         return DriverManager.getConnection(url, username, password);
     }
     public static void main(String[] args) throws Exception {
-        createUser(5000);
+        createUser(300);
     }
 
 }

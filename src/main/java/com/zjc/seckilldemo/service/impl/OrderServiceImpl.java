@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.zjc.seckilldemo.exception.GlobalException;
 import com.zjc.seckilldemo.mapper.OrderMapper;
-import com.zjc.seckilldemo.mapper.SeckillOrderMapper;
 import com.zjc.seckilldemo.pojo.Order;
 import com.zjc.seckilldemo.pojo.SeckillGoods;
 import com.zjc.seckilldemo.pojo.SeckillOrder;
@@ -17,7 +16,7 @@ import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.service.ISeckillGoodsService;
 import com.zjc.seckilldemo.service.ISeckillOrderService;
 import com.zjc.seckilldemo.util.JsonUtil;
-import com.zjc.seckilldemo.util.MD5Util;
+import com.zjc.seckilldemo.util.SM3Util;
 import com.zjc.seckilldemo.util.UUIDUtil;
 import com.zjc.seckilldemo.vo.GoodsVo;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
@@ -136,7 +135,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @Override
     public String createPath(User user, Integer goodsId) {
-        String str = MD5Util.md5(UUIDUtil.uuid() + "123456");
+        String str = SM3Util.SM3Encrypt(UUIDUtil.uuid() + "123456");
         redisTemplate.opsForValue().set("seckillPath:" + user.getId() + ":" + goodsId, str, 60, TimeUnit.SECONDS);
         return str;
     }

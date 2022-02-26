@@ -99,7 +99,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
         user.setId(mobile);
         user.setSalt("1a2b3c4d");
         user.setNickname(nickname);
-        user.setPassword(MD5Util.formPassToDBPass(password, user.getSalt()));
+        user.setPassword(SM3Util.formPassToDBPass(password, user.getSalt()));
         user.setIdentity(identity);
         if (userMapper.selectUserByIdentity(identity) != null){
             return RespBean.error(RespBeanEnum.ID_ALREADY_REGISTER);
