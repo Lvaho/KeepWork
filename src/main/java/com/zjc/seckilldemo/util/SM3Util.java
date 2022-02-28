@@ -53,8 +53,10 @@ public class SM3Util {
         //return hs.toUpperCase();
     }
     public static void main(String[] args) {
-        System.out.println(inputPassToFormPass("123456"));//f8754eae351227871e68eca11a10579adf8c816c380da79af3d8712761e39227
+        String x = inputPassToFormPass("123456");
+        System.out.println(x);//f8754eae351227871e68eca11a10579adf8c816c380da79af3d8712761e39227
         System.out.println(formPassToDBPass("f8754eae351227871e68eca11a10579adf8c816c380da79af3d8712761e39227","1a2b3c4d"));//6764ff9fe99bdb23d46e3d7e08aaa983a8c293be8ca6e03aa3091d9fc6e0c867
         System.out.println(inputPassToDbPass("123456","1a2b3c4d"));//6764ff9fe99bdb23d46e3d7e08aaa983a8c293be8ca6e03aa3091d9fc6e0c867
+        System.out.println(x.length());
     }
 }

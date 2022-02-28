@@ -90,7 +90,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
      * @param nickname
      * @param mobile "ONLY ONE"
      * @param identity "ONLY ONE"
-     * @param password "ALREADY MD5 AND SALT"
+     * @param password "ALREADY SM3 AND SALT"
      * @return
      */
     @Override
