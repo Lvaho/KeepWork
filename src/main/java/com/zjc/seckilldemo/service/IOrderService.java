@@ -5,6 +5,7 @@ import com.zjc.seckilldemo.pojo.Order;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.vo.GoodsVo;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
+import com.zjc.seckilldemo.vo.RespBean;
 
 /**
  * <p>
@@ -43,4 +44,11 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     String createPath(User user, Integer goodsId);
+    /**
+     * 支付秒杀订单
+     * @param user
+     * @param orderid
+     * @return Respbean
+     */
+    RespBean payseckillOrder(User user, Integer orderid);
 }

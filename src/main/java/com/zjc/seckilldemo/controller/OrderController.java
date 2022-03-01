@@ -40,5 +40,16 @@ public class OrderController {
         OrderDetailVo detail = orderService.detail(orderId);
         return RespBean.success(detail);
     }
+    /**
+     * 支付订单
+     * @param user
+     * @param orderId
+     * @Return RespBean
+     */
+    @RequestMapping(value = "payorder",method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean payorder(User user,Integer orderId){
+        return orderService.payseckillOrder(user,orderId);
+    }
 
 }

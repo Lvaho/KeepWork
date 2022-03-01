@@ -24,8 +24,11 @@ public enum RespBeanEnum {
     ORDER_NOT_EXIST(500503,"订单不存在"),
     REQUEST_ILLEGAL(500504,"非法请求"),
     ACCESS_LIMIT_REACHED(500505,"请求次数过多请稍后再试"),
+    ORDER_PAY_FAIL(500506,"支付失败，请联系客服处理"),
+    ORDER_ALREADY_PAYED(500507,"订单已经支付"),
     //余额模块
-    CHARGENUM_SMALLER_THAN_ZERO(500601,"充值金额小于0");
+    CHARGENUM_SMALLER_THAN_ZERO(500601,"充值金额小于0"),
+    DEPOSIT_NOT_ENOUGH_TO_PAY_ORDER(500602,"余额不足以支付订单");
     private final Integer code;
     private final String message;
 }

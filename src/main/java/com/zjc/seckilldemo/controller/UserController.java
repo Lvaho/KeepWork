@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
     @Autowired
     private IUserService iUserService;
-    @ApiOperation(value = "注册接口 注意：传进来的密码需要已经MD5加密以及加盐 手机号 身份证号都不能重复")
+    @ApiOperation(value = "注册接口 注意：传进来的密码需要已经SM3加密以及加盐 手机号 身份证号都不能重复")
     @RequestMapping(value = "/doRegister",method = RequestMethod.POST)
     @ResponseBody
     public RespBean doRegister(String nickname, String mobile, String identity, String password) {

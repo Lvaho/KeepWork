@@ -36,6 +36,11 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
     @Value("${alipay.returnUrl}")
     private String returnUrl;
 
+    /**
+     * 余额充值
+     * @param depositVo
+     * @return
+     */
     @Override
     public int recharge(DepositVo depositVo) {
         String identity = depositVo.getIdentity();
@@ -48,6 +53,13 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
         return depositMapper.updateDepositByIdentity(depositByIdentity);
     }
 
+    /**
+     * 创建支付宝订单
+     * @param depositVo
+     * @param user
+     * @return
+     * @throws Exception
+     */
     @Override
     public RespBean SendRequestToAlipay(DepositVo depositVo, User user) throws Exception{
         if (user == null){
@@ -67,21 +79,39 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
         return RespBean.success(response.body);
     }
 
+    /**
+     * 创建数据库充值订单
+     * @param depositVo
+     * @param orderNo
+     */
     @Override
     public void createOrder(DepositVo depositVo,String orderNo) {
         depositMapper.createOrder(depositVo,orderNo);
     }
 
+    /**
+     * 根据身份证查询余额
+     * @param identity
+     * @return
+     */
     @Override
     public Deposit findDepositByIdentity(String identity) {
         return depositMapper.findDepositByIdentity(identity);
     }
 
+    /**
+     * 通过友好回调界面查询订单以及根据主动查询的订单状态进行订单充值
+     * @param out_trade_no
+     * @return
+     * @throws Exception
+     */
     @Override
     public String checkOrderAndrecharge(String out_trade_no) throws Exception {
+        //EasySDK对支付订单状态进行查询
         AlipayTradeQueryResponse query = Factory.Payment.
                 Common().
                 query(out_trade_no);
+        //查询订单
         RechargeOrderVo rechargeOrderByOrderNo = depositMapper.findRechargeOrderByOrderNo(out_trade_no);
         String identity = rechargeOrderByOrderNo.getIdentity();
         if (query.tradeStatus.equals("TRADE_SUCCESS") & !rechargeOrderByOrderNo.getStatus().equals("2")){

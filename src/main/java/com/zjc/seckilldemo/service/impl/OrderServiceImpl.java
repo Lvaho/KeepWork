@@ -1,16 +1,15 @@
 package com.zjc.seckilldemo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 
 import com.zjc.seckilldemo.exception.GlobalException;
+import com.zjc.seckilldemo.mapper.DepositMapper;
 import com.zjc.seckilldemo.mapper.OrderMapper;
-import com.zjc.seckilldemo.pojo.Order;
-import com.zjc.seckilldemo.pojo.SeckillGoods;
-import com.zjc.seckilldemo.pojo.SeckillOrder;
-import com.zjc.seckilldemo.pojo.User;
+import com.zjc.seckilldemo.pojo.*;
 import com.zjc.seckilldemo.service.IGoodsService;
 import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.service.ISeckillGoodsService;
@@ -20,6 +19,7 @@ import com.zjc.seckilldemo.util.SM3Util;
 import com.zjc.seckilldemo.util.UUIDUtil;
 import com.zjc.seckilldemo.vo.GoodsVo;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
+import com.zjc.seckilldemo.vo.RespBean;
 import com.zjc.seckilldemo.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.awt.print.Pageable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -53,6 +55,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private ISeckillOrderService seckillOrderService;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private DepositMapper depositMapper;
+
     @Override
     public Order seckill(User user, GoodsVo goods) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
@@ -138,6 +143,44 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         String str = SM3Util.SM3Encrypt(UUIDUtil.uuid() + "123456");
         redisTemplate.opsForValue().set("seckillPath:" + user.getId() + ":" + goodsId, str, 60, TimeUnit.SECONDS);
         return str;
+    }
+
+    @Override
+    public RespBean payseckillOrder(User user, Integer orderid) {
+        //未获取到用户Token
+        if (user == null){
+            return RespBean.error(RespBeanEnum.SESSION_ERROR);
+        }
+        String identity = user.getIdentity();
+        Deposit deposit = depositMapper.findDepositByIdentity(identity);
+        Order order = orderMapper.selectById(orderid);
+        //未查询到订单
+        if (order==null){
+            return RespBean.error(RespBeanEnum.ORDER_NOT_EXIST);
+        }
+        //订单已支付
+        if (order.getStatus() == 2 ){
+            return RespBean.error(RespBeanEnum.ORDER_ALREADY_PAYED);
+        }
+        BigDecimal depositreduced = deposit.getDeposit().subtract(order.getGoodsPrice());
+        //余额不足
+        if (depositreduced.compareTo(BigDecimal.ZERO) < 0 ){
+            return RespBean.error(RespBeanEnum.DEPOSIT_NOT_ENOUGH_TO_PAY_ORDER);
+        }
+        //扣减余额
+        UpdateWrapper<Deposit> updatedeposit = new UpdateWrapper<>();
+        updatedeposit.eq("identity",identity).set("deposit",depositreduced);
+        Integer i = depositMapper.update(null,updatedeposit);
+        //修改订单状态
+        UpdateWrapper<Order> updateOrder = new UpdateWrapper<>();
+        updateOrder.eq("id",orderid).set("status",1);
+        Integer j = orderMapper.update(null,updateOrder);
+        //成功
+        if (i == 1 && j ==1){
+            return RespBean.success();
+        }
+        //未知错误
+        return RespBean.error(RespBeanEnum.ORDER_PAY_FAIL);
     }
 
 
