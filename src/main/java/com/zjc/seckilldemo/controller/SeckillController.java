@@ -1,6 +1,7 @@
 package com.zjc.seckilldemo.controller;
 
 
+import com.zjc.seckilldemo.aop.ScreenAnnotation;
 import com.zjc.seckilldemo.rocketmq.RocketMessageSender;
 import com.zjc.seckilldemo.validation.AccessLimit;
 
@@ -146,6 +147,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return
      */
+    @ScreenAnnotation
     @AccessLimit(second=5,maxCount=5,needLogin=true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody

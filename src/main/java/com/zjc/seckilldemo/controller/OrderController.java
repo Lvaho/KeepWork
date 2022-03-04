@@ -1,6 +1,7 @@
 package com.zjc.seckilldemo.controller;
 
 
+import com.zjc.seckilldemo.aop.ScreenAnnotation;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
@@ -46,7 +47,7 @@ public class OrderController {
      * @param orderId
      * @Return RespBean
      */
-    @RequestMapping(value = "payorder",method = RequestMethod.POST)
+    @RequestMapping(value = "/payorder",method = RequestMethod.POST)
     @ResponseBody
     public RespBean payorder(User user,Integer orderId){
         return orderService.payseckillOrder(user,orderId);
