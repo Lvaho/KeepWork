@@ -8,6 +8,7 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.zjc.seckilldemo.mapper.DepositMapper;
+import com.zjc.seckilldemo.mapper.DepositOrderMapper;
 import com.zjc.seckilldemo.pojo.Deposit;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IDepositService;
@@ -48,6 +49,8 @@ public class DepositController {
     private DepositMapper depositMapper;
     @Autowired
     private IDepositService depositService;
+    @Autowired
+    private DepositOrderMapper depositOrderMapper;
 
     /**
      * 跳转余额界面
@@ -87,19 +90,24 @@ public class DepositController {
     @ApiOperation(value = "充值接口 返回RespBean")
     @RequestMapping(value = "/doRecharge", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doRecharge(User user, BigDecimal chargenum, HttpServletResponse httpServletResponse) throws Exception {
+    public RespBean doRecharge(User user, BigDecimal chargenum, HttpServletResponse httpServletResponse,HttpServletRequest request) throws Exception {
         DepositVo depositVo = new DepositVo();
         //if (chargenum.intValue() < 0) {
         //    return RespBean.error(RespBeanEnum.CHARGENUM_SMALLER_THAN_ZERO);
         //}
+        String requestURL = request.getRequestURL().toString();
+        requestURL=requestURL.substring(0,requestURL.length()-10);
+        requestURL=requestURL+"checkOrder";
+        System.out.println(requestURL);
         depositVo.setIdentity(user.getIdentity());
         depositVo.setTotal(chargenum);
-        return depositService.SendRequestToAlipay(depositVo,user);
+        return depositService.SendRequestToAlipay(depositVo,user,requestURL);
     }
 
     @ResponseBody
     @RequestMapping(value = "/checkOrder",method = RequestMethod.GET)
     public String checkOrder(String out_trade_no) throws Exception {
+
             return depositService.checkOrderAndrecharge(out_trade_no);
     }
 
@@ -111,7 +119,7 @@ public class DepositController {
             String outTradeNo = params.get("out_trade_no");
             String totalamount = params.get("total_amount");
             String timestamp = params.get("notify_time");
-            RechargeOrderVo rechargeOrderByOrderNo = depositMapper.findRechargeOrderByOrderNo(outTradeNo);
+            RechargeOrderVo rechargeOrderByOrderNo = depositOrderMapper.findRechargeOrderByOrderNo(outTradeNo);
             if (rechargeOrderByOrderNo.getOut_trade_no().equals(outTradeNo) & Integer.parseInt(rechargeOrderByOrderNo.getStatus()) == 1 & rechargeOrderByOrderNo.getTotal_amount().equals(totalamount)){
                 rechargeOrderByOrderNo.setStatus("2");
                 rechargeOrderByOrderNo.setTimestamp(timestamp);
@@ -121,7 +129,7 @@ public class DepositController {
                 String identity = rechargeOrderByOrderNo.getIdentity();
                 depositVo.setIdentity(identity);
                 depositService.recharge(depositVo);
-                depositMapper.updateRechargeOrderByOrderNo(rechargeOrderByOrderNo);
+                depositOrderMapper.updateRechargeOrderByOrderNo(rechargeOrderByOrderNo);
                 System.out.println("成功接收回调");
                 return "success";
             }

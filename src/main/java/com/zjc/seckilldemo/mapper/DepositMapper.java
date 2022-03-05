@@ -16,7 +16,4 @@ import com.zjc.seckilldemo.vo.RechargeOrderVo;
 public interface DepositMapper extends BaseMapper<Deposit> {
    Deposit findDepositByIdentity(String identity);
    int updateDepositByIdentity(Deposit deposit);
-   int createOrder(DepositVo depositVo,String orderNo);
-   RechargeOrderVo findRechargeOrderByOrderNo(String orderNo);
-   int updateRechargeOrderByOrderNo(RechargeOrderVo rechargeOrderVo);
 }

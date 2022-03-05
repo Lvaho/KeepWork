@@ -15,21 +15,27 @@ import java.math.BigDecimal;
  * </p>
  *
  * @author lvaho
- * @since 2022-02-07
+ * @since 2022-03-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("t_deposit")
-public class Deposit implements Serializable {
+@TableName("t_deposit_order")
+public class DepositOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private Integer id;
+
+    private String outTradeNo;
+
+    private BigDecimal totalAmount;
+
+    private String timestamp;
 
     private String identity;
 
-    private BigDecimal deposit;
+    private String status;
 
 
 }

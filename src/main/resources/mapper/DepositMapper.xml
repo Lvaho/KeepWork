@@ -4,51 +4,26 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zjc.seckilldemo.pojo.Deposit">
-        <id column="identity" property="identity" />
-        <result column="deposit" property="deposit" />
-    </resultMap>
-
-    <resultMap id="RechargeOrderVo" type="com.zjc.seckilldemo.vo.RechargeOrderVo">
-        <result column="out_trade_no" property="out_trade_no" />
-        <result column="total_amount" property="total_amount" />
+        <id column="id" property="id" />
         <result column="identity" property="identity" />
-        <result column="timestamp" property="timestamp" />
-        <result column="status" property="status" />
+        <result column="deposit" property="deposit" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        identity, deposit
+        id, identity, deposit
     </sql>
-<select id="findDepositByIdentity" resultType="com.zjc.seckilldemo.pojo.Deposit">
-    SELECT
-    *
-    FROM t_deposit
-    WHERE identity = #{identity}
-</select>
-
+    <select id="findDepositByIdentity" resultType="com.zjc.seckilldemo.pojo.Deposit">
+        SELECT
+        *
+        FROM t_deposit
+        WHERE identity = #{identity}
+    </select>
     <update id="updateDepositByIdentity" parameterType="com.zjc.seckilldemo.pojo.Deposit">
         UPDATE t_deposit
         <set>
             <if test="deposit != null">deposit = #{deposit}</if>
         </set>
         WHERE identity = #{identity}
-    </update>
-    <insert id="createOrder">
-    INSERT INTO t_deposit_order(out_trade_no,total_amount,identity,status)
-    VALUES (#{orderNo},#{depositVo.total},#{depositVo.identity},"1")
-</insert>
-    <select id="findRechargeOrderByOrderNo"  resultMap="RechargeOrderVo">
-        SELECT *
-        FROM t_deposit_order
-        WHERE out_trade_no=#{orderNo}
-    </select>
-    <update id="updateRechargeOrderByOrderNo" parameterType="com.zjc.seckilldemo.vo.RechargeOrderVo">
-        UPDATE t_deposit_order
-        <set>
-            timestamp = #{timestamp},
-            status = #{status}
-        </set>
-        WHERE out_trade_no = #{out_trade_no}
     </update>
 </mapper>

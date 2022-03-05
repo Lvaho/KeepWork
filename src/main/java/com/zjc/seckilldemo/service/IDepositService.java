@@ -27,13 +27,7 @@ public interface IDepositService extends IService<Deposit> {
      * @param depositVo
      * @return RespBean(code,message,obj==>html)
      */
-    public RespBean SendRequestToAlipay(DepositVo depositVo, User user) throws Exception;
-    /**
-     * 创建充值订单
-     * @param depositVo
-     * @return
-     */
-    public void createOrder(DepositVo depositVo,String orderNo);
+    public RespBean SendRequestToAlipay(DepositVo depositVo, User user,String returnURL) throws Exception;
     /**
      * 通过身份证查询余额
      * @param identity

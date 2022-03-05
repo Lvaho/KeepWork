@@ -1,16 +1,15 @@
 package com.zjc.seckilldemo;
 
-import com.zjc.seckilldemo.mapper.UserDetailMapper;
-import com.zjc.seckilldemo.mapper.DepositMapper;
-import com.zjc.seckilldemo.mapper.GoodsMapper;
-import com.zjc.seckilldemo.mapper.OrderMapper;
-import com.zjc.seckilldemo.mapper.UserMapper;
+import com.zjc.seckilldemo.mapper.*;
+import com.zjc.seckilldemo.pojo.Deposit;
 import com.zjc.seckilldemo.rocketmq.RocketMessageSender;
 import com.zjc.seckilldemo.service.IDepositService;
 import com.zjc.seckilldemo.service.IUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.awt.print.Pageable;
 
 @SpringBootTest
 class SeckillDemoApplicationTests {
@@ -25,14 +24,17 @@ private OrderMapper orderMapper;
 @Autowired
 private DepositMapper depositMapper;
 @Autowired
-private RocketMessageSender rocketMessageSender;
+    private DepositOrderMapper depositOrderMapper;
 @Autowired
-private UserDetailMapper userDetailMapper;
+private RocketMessageSender rocketMessageSender;
+
 @Autowired
 private IDepositService depositService;
     @Test
     void contextLoads() throws Exception {
-        System.out.println(userDetailMapper.findUserDetailbyIdentity("testsfz0"));
+        System.out.println(depositOrderMapper.findRechargeOrderByOrderNo("20220305125651396"));
+        Deposit deposit = new Deposit();
+
     }
 
 }

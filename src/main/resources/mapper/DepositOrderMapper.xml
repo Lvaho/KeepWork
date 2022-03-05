@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjc.seckilldemo.mapper.DepositOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zjc.seckilldemo.pojo.DepositOrder">
+        <id column="id" property="id" />
+        <result column="out_trade_no" property="outTradeNo" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="timestamp" property="timestamp" />
+        <result column="identity" property="identity" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <resultMap id="RechargeOrderVo" type="com.zjc.seckilldemo.vo.RechargeOrderVo">
+        <result column="out_trade_no" property="out_trade_no" />
+        <result column="total_amount" property="total_amount" />
+        <result column="identity" property="identity" />
+        <result column="timestamp" property="timestamp" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, out_trade_no, total_amount, timestamp, identity, status
+    </sql>
+    <update id="updateRechargeOrderByOrderNo" parameterType="com.zjc.seckilldemo.vo.RechargeOrderVo">
+        UPDATE t_deposit_order
+        <set>
+            timestamp = #{timestamp},
+            status = #{status}
+        </set>
+        WHERE out_trade_no = #{out_trade_no}
+    </update>
+    <select id="findRechargeOrderByOrderNo"  resultMap="RechargeOrderVo">
+        SELECT out_trade_no,total_amount,identity,timestamp,status
+        FROM t_deposit_order
+        WHERE out_trade_no=#{orderNo}
+    </select>
+
+</mapper>

@@ -5,8 +5,10 @@ import com.alipay.easysdk.payment.common.models.AlipayTradeQueryResponse;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zjc.seckilldemo.mapper.DepositMapper;
+import com.zjc.seckilldemo.mapper.DepositOrderMapper;
 import com.zjc.seckilldemo.pojo.Deposit;
 import com.zjc.seckilldemo.pojo.User;
+import com.zjc.seckilldemo.service.IDepositOrderService;
 import com.zjc.seckilldemo.service.IDepositService;
 import com.zjc.seckilldemo.util.OrderUtil;
 import com.zjc.seckilldemo.vo.DepositVo;
@@ -33,8 +35,10 @@ import java.util.Date;
 public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> implements IDepositService {
     @Autowired
     private DepositMapper depositMapper;
-    @Value("${alipay.returnUrl}")
-    private String returnUrl;
+    @Autowired
+    private DepositOrderMapper depositOrderMapper;
+    @Autowired
+    private IDepositOrderService depositOrderService;
 
     /**
      * 余额充值
@@ -61,7 +65,7 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
      * @throws Exception
      */
     @Override
-    public RespBean SendRequestToAlipay(DepositVo depositVo, User user) throws Exception{
+    public RespBean SendRequestToAlipay(DepositVo depositVo, User user,String returnUrl) throws Exception{
         if (user == null){
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
@@ -74,20 +78,12 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
                 .Payment
                 .Page()
                 .pay(identity, orderNo,depositVo.getTotal().toString(),returnUrl);
-        createOrder(depositVo,orderNo);
+        depositOrderService.createOrder(depositVo,orderNo);
         //return response.body;
         return RespBean.success(response.body);
     }
 
-    /**
-     * 创建数据库充值订单
-     * @param depositVo
-     * @param orderNo
-     */
-    @Override
-    public void createOrder(DepositVo depositVo,String orderNo) {
-        depositMapper.createOrder(depositVo,orderNo);
-    }
+
 
     /**
      * 根据身份证查询余额
@@ -112,12 +108,12 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
                 Common().
                 query(out_trade_no);
         //查询订单
-        RechargeOrderVo rechargeOrderByOrderNo = depositMapper.findRechargeOrderByOrderNo(out_trade_no);
+        RechargeOrderVo rechargeOrderByOrderNo = depositOrderMapper.findRechargeOrderByOrderNo(out_trade_no);
         String identity = rechargeOrderByOrderNo.getIdentity();
         if (query.tradeStatus.equals("TRADE_SUCCESS") & !rechargeOrderByOrderNo.getStatus().equals("2")){
             rechargeOrderByOrderNo.setStatus("2");
             rechargeOrderByOrderNo.setTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
-            depositMapper.updateRechargeOrderByOrderNo(rechargeOrderByOrderNo);
+            depositOrderMapper.updateRechargeOrderByOrderNo(rechargeOrderByOrderNo);
             Deposit depositByIdentity = depositMapper.findDepositByIdentity(identity);
             String total_amount = rechargeOrderByOrderNo.getTotal_amount();
             BigDecimal bigDecimal = BigDecimal.valueOf(Long.valueOf(total_amount));
