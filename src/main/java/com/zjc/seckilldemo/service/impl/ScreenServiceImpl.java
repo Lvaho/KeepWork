@@ -5,15 +5,14 @@ import com.zjc.seckilldemo.service.IMethodnameService;
 import com.zjc.seckilldemo.service.IScreenService;
 import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.util.ListUtil;
-import com.zjc.seckilldemo.vo.InterfaceControlVo;
-import com.zjc.seckilldemo.vo.RespBean;
-import com.zjc.seckilldemo.vo.RespBeanEnum;
-import com.zjc.seckilldemo.vo.ViolationRecordVo;
+import com.zjc.seckilldemo.vo.*;
 import org.apache.ibatis.annotations.Select;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -25,6 +24,17 @@ public class ScreenServiceImpl  implements IScreenService {
     @Autowired
     private IUserService userService;
 
+
+    /**
+     * 准入初筛最主要的部分
+     * 流程图在文档里面
+     * @param method_name
+     * @param identity
+     * @param AOPTargetClassReturnType
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object screen(String method_name, String identity, String AOPTargetClassReturnType, ProceedingJoinPoint pjp) throws Throwable {
         if (methodnameService.checkIfInterfaceNeedScreen(method_name)) {
@@ -49,23 +59,32 @@ public class ScreenServiceImpl  implements IScreenService {
                 }
             }
             if (violation){
-                recordScreenResult(violation,identity);
+                recordScreenResult(violation,identity,method_name);
                 if (AOPTargetClassReturnType.contains("RespBean")){
                     return RespBean.error(RespBeanEnum.USER_ACTION_REFUSE);
                 }else if (AOPTargetClassReturnType.contains("String")){
                     return "useractionrefuse";
                 }
+                recordScreenResult(violation,identity,method_name);
                 return null;
             }
-            recordScreenResult(violation,identity);
+            recordScreenResult(violation,identity,method_name);
             return pjp.proceed();
         }
         return pjp.proceed();
     }
 
+    /**
+     * 记录筛选结果
+     * @param violation
+     * @param identity
+     * @param method_name
+     */
     @Override
-    public int recordScreenResult(boolean violation, String identity) {
-        return 0;
+    public void recordScreenResult(boolean violation, String identity,String method_name) {
+        Timestamp time1 = new Timestamp(System.currentTimeMillis());
+        userService.recordScreenResult(violation,identity,method_name,time1);
+
     }
 
 }

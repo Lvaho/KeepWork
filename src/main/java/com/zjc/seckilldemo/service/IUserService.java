@@ -8,6 +8,8 @@ import com.zjc.seckilldemo.vo.ViolationRecordVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,4 +52,8 @@ public interface IUserService extends IService<User> {
      * @param identity
      */
     List<ViolationRecordVo> findViolationRecordVobyIdentity(String identity);
+    /**
+     * 存储用户的调用接口的记录
+     */
+    void recordScreenResult(boolean violation, String identity, String method_name, Timestamp time);
 }

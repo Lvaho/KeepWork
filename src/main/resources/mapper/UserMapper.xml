@@ -36,4 +36,7 @@
         FROM t_user_screen_description
         WHERE user_identity = #{identity}
     </select>
+    <insert id="recordScreenResult" parameterType="com.zjc.seckilldemo.vo.UserCallVo">
+        INSERT INTO t_user_method_result(id,user_identity,method_id,timestamp,result) values(id,#{user_identity},#{method_id},#{timestamp},#{result})
+    </insert>
 </mapper>

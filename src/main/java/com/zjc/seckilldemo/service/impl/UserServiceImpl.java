@@ -1,15 +1,16 @@
 package com.zjc.seckilldemo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zjc.seckilldemo.exception.GlobalException;
+import com.zjc.seckilldemo.mapper.MethodnameMapper;
 import com.zjc.seckilldemo.mapper.UserMapper;
+import com.zjc.seckilldemo.pojo.Methodname;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.util.*;
-import com.zjc.seckilldemo.vo.LoginVo;
-import com.zjc.seckilldemo.vo.RespBean;
-import com.zjc.seckilldemo.vo.RespBeanEnum;
-import com.zjc.seckilldemo.vo.ViolationRecordVo;
+import com.zjc.seckilldemo.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
     private UserMapper userMapper;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private MethodnameMapper methodnameMapper;
     /**
      * 登录
      *
@@ -116,6 +121,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
     @Override
     public List<ViolationRecordVo> findViolationRecordVobyIdentity(String identity) {
         return userMapper.findUserViolationRecordVoByUseridentity(identity);
+    }
+
+    @Override
+    public void recordScreenResult(boolean violation, String identity, String method_name, Timestamp time) {
+        String record ="";
+        if (violation){
+            record="不通过";
+        }else {
+            record="通过";
+        }
+        QueryWrapper<Methodname> methodnameWrapper = new QueryWrapper<>();
+        methodnameWrapper.eq("method_name",method_name);
+        Methodname methodname = methodnameMapper.selectOne(methodnameWrapper);
+        UserCallVo userCallVo = new UserCallVo();
+        userCallVo.setMethod_id(methodname.getId());
+        userCallVo.setResult(record);
+        userCallVo.setTimestamp(time);
+        userCallVo.setUser_identity(identity);
+        userMapper.recordScreenResult(userCallVo);
     }
 
 

@@ -13,5 +13,5 @@ import org.aspectj.lang.ProceedingJoinPoint;
 
 public interface IScreenService {
     Object screen(String method_name, String identity, String AOPTargetClassReturnType, ProceedingJoinPoint pjp) throws Throwable;
-    int recordScreenResult(boolean violation,String identity);
+    void recordScreenResult(boolean violation,String identity,String method_name);
 }
