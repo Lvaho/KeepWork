@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo.controller;
 
+import com.zjc.seckilldemo.aop.ScreenAnnotation;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.vo.LoginVo;
@@ -46,6 +47,7 @@ public class LoginController {
         return userService.login(request, response, loginVo);
     }
 
+    @ScreenAnnotation
     @ApiOperation(value = "登陆后页面")
     @RequestMapping(value = "/logined",method = RequestMethod.GET)
     public String Logined(Model model, User user){

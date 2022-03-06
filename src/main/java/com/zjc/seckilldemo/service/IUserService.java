@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.vo.LoginVo;
 import com.zjc.seckilldemo.vo.RespBean;
+import com.zjc.seckilldemo.vo.ViolationRecordVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * <p>
@@ -42,4 +44,10 @@ public interface IUserService extends IService<User> {
      * @return
      */
     RespBean register(String nickname, String mobile, String identity, String password);
+
+    /**
+     * 查询用户不符合条件的记录
+     * @param identity
+     */
+    List<ViolationRecordVo> findViolationRecordVobyIdentity(String identity);
 }

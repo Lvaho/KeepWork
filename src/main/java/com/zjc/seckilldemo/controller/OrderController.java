@@ -32,6 +32,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
+    @ScreenAnnotation
     @RequestMapping(value = "/detail",method = RequestMethod.GET)
     @ResponseBody
     public RespBean detail(User user, Integer orderId){

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.awt.print.Pageable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 class SeckillDemoApplicationTests {
@@ -27,14 +29,17 @@ private DepositMapper depositMapper;
     private DepositOrderMapper depositOrderMapper;
 @Autowired
 private RocketMessageSender rocketMessageSender;
-
+@Autowired
+private  MethodnameMapper methodnameMapper;
 @Autowired
 private IDepositService depositService;
+
     @Test
     void contextLoads() throws Exception {
-        System.out.println(depositOrderMapper.findRechargeOrderByOrderNo("20220305125651396"));
-        Deposit deposit = new Deposit();
 
+
+
+        System.out.println(methodnameMapper.findInterfaceControlVobyInderfaceName("getpath"));
     }
 
 }

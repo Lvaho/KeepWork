@@ -9,6 +9,7 @@ import com.zjc.seckilldemo.util.*;
 import com.zjc.seckilldemo.vo.LoginVo;
 import com.zjc.seckilldemo.vo.RespBean;
 import com.zjc.seckilldemo.vo.RespBeanEnum;
+import com.zjc.seckilldemo.vo.ViolationRecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -108,5 +112,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
         }else {userMapper.insert(user);}
         return RespBean.success("注册成功");
     }
+
+    @Override
+    public List<ViolationRecordVo> findViolationRecordVobyIdentity(String identity) {
+        return userMapper.findUserViolationRecordVoByUseridentity(identity);
+    }
+
+
 }
 

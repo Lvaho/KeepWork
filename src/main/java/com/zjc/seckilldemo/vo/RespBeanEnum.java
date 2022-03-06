@@ -32,7 +32,8 @@ public enum RespBeanEnum {
     //准入初筛模块
     USER_DEFAULTER(500701,"用户被列入失信人名单"),
     USER_WORKSTATR_BAD(500702,"用户工作状态异常"),
-    USER_OVERDUE(500703,"用户有逾期记录");
+    USER_OVERDUE(500703,"用户有逾期记录"),
+    USER_ACTION_REFUSE(500704,"您无法执行此操作");
     private final Integer code;
     private final String message;
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjc.seckilldemo.mapper.MethodnameMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zjc.seckilldemo.pojo.Methodname">
+        <id column="id" property="id" />
+        <result column="method_name" property="methodName" />
+    </resultMap>
+
+    <resultMap id="InterfaceControlVo" type="com.zjc.seckilldemo.vo.InterfaceControlVo">
+        <id column="id" property="id"/>
+        <result column="screen_id" property="screen_id"/>
+        <result column="method_id" property="method_id"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, method_name
+    </sql>
+
+
+    <select id="findInterfaceControlVobyInderfaceName" resultMap="InterfaceControlVo">
+        SELECT a.id,a.screen_id,a.method_id
+        FROM t_method_screen_switching AS a,t_methodname AS b
+        WHERE b.method_name = #{method_name}
+    </select>
+
+</mapper>

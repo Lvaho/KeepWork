@@ -15,11 +15,25 @@
         <result column="identity" property="identity" />
     </resultMap>
 
+    <resultMap id="ViolationRecordVo" type="com.zjc.seckilldemo.vo.ViolationRecordVo">
+        <id column="id" property="id" />
+        <result column="user_identity" property="user_identity"/>
+        <result column="screen_id" property="screen_id" />
+        <result column="description" property="description" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, nickname, password, salt, head, register_date, last_login_date, login_count, identity
     </sql>
+
    <select id="selectUserByIdentity" parameterType="String" resultType="com.zjc.seckilldemo.pojo.User">
        select * from `t_user` where identity = #{identity}
    </select>
+
+    <select id="findUserViolationRecordVoByUseridentity"  resultMap="ViolationRecordVo">
+        SELECT *
+        FROM t_user_screen_description
+        WHERE user_identity = #{identity}
+    </select>
 </mapper>
