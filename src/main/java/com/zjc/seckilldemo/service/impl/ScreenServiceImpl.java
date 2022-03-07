@@ -65,7 +65,6 @@ public class ScreenServiceImpl  implements IScreenService {
                 }else if (AOPTargetClassReturnType.contains("String")){
                     return "useractionrefuse";
                 }
-                recordScreenResult(violation,identity,method_name);
                 return null;
             }
             recordScreenResult(violation,identity,method_name);
