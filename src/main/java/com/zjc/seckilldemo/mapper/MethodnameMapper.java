@@ -15,5 +15,5 @@ import java.util.List;
  * @since 2022-03-05
  */
 public interface MethodnameMapper extends BaseMapper<Methodname> {
-    public List<InterfaceControlVo> findInterfaceControlVobyInderfaceName(String method_name);
+    public List<InterfaceControlVo> findInterfaceControlVobyInderfaceName(Integer method_id);
 }

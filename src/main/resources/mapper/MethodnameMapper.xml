@@ -21,9 +21,9 @@
 
 
     <select id="findInterfaceControlVobyInderfaceName" resultMap="InterfaceControlVo">
-        SELECT a.id,a.screen_id,a.method_id
-        FROM t_method_screen_switching AS a,t_methodname AS b
-        WHERE b.method_name = #{method_name}
+        SELECT *
+        FROM t_method_screen_switching
+        WHERE method_id = #{method_id}
     </select>
 
 </mapper>

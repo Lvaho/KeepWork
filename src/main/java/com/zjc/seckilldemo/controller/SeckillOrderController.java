@@ -30,4 +30,5 @@ import com.zjc.seckilldemo.vo.RespBean;
 @Controller
 
 public class SeckillOrderController {
+
 }

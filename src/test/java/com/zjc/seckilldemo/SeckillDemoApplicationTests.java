@@ -38,16 +38,7 @@ private IDepositService depositService;
 
     @Test
     void contextLoads() throws Exception {
-        Timestamp time1 = new Timestamp(System.currentTimeMillis());
-        UserCallVo userCallVo = new UserCallVo();
-        userCallVo.setUser_identity("testsfz1");
-        userCallVo.setTimestamp(time1);
-        userCallVo.setResult("通过");
-        userCallVo.setMethod_id(1);
-        userMapper.recordScreenResult(userCallVo);
-
-
-
+        System.out.println(methodnameMapper.findInterfaceControlVobyInderfaceName(1));
     }
 
 }

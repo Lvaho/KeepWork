@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zjc.seckilldemo.mapper.MethodnameMapper;
 import com.zjc.seckilldemo.pojo.Methodname;
@@ -28,13 +29,17 @@ public class MethodnameServiceImpl extends ServiceImpl<MethodnameMapper, Methodn
 
     @Override
     public List<InterfaceControlVo> findInterfaceControlVobyInterfaceName(String method_name) {
-        return methodnameMapper.findInterfaceControlVobyInderfaceName(method_name);
+        QueryWrapper<Methodname> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("method_name",method_name);
+        Methodname methodname = methodnameMapper.selectOne(queryWrapper);
+        return methodnameMapper.findInterfaceControlVobyInderfaceName(methodname.getId());
     }
 
     public boolean checkIfInterfaceNeedScreen(String method_name){
         Map<String,Object> map = new HashMap<>();
         map.put("method_name",method_name);
-        if (methodnameMapper.selectByMap(map) != null) {
+        List<Methodname> methodnames = methodnameMapper.selectByMap(map);
+        if (methodnames.size() != 0) {
             return true;
         }
         return false;
