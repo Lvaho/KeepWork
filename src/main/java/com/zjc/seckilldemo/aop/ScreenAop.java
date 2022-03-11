@@ -27,7 +27,7 @@ public class ScreenAop {
 
     @Autowired
     private IScreenService screenService;
-    //在拥有ScreenAnnotataion的注解的方法上创建切点
+    //在拥有@ScreenAnnotataion的注解的方法上创建切点
     @Pointcut("@annotation(com.zjc.seckilldemo.aop.ScreenAnnotation)")
     public void ScreenPointCut(){
     }

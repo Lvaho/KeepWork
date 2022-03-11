@@ -3,6 +3,9 @@ package com.zjc.seckilldemo.util;
 import org.bouncycastle.crypto.digests.SM3Digest;
 import org.bouncycastle.util.encoders.Hex;
 
+/**
+ * SM3加密方案，对String进行加密
+ */
 public class SM3Util {
     private static final String salt = "1a2b3c4d";
     public static String inputPassToFormPass(String inputPass) {

@@ -145,6 +145,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return str;
     }
 
+    /**
+     * 兜底方案，手动支付秒杀订单
+     * @param user
+     * @param orderid
+     * @return
+     */
     @Override
     public RespBean payseckillOrder(User user, Integer orderid) {
         //未获取到用户Token
@@ -175,6 +181,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         UpdateWrapper<Order> updateOrder = new UpdateWrapper<>();
         updateOrder.eq("id",orderid).set("status",1);
         Integer j = orderMapper.update(null,updateOrder);
+        //为银行账户添加对应资金
+        //TO DO
         //成功
         if (i == 1 && j ==1){
             return RespBean.success();

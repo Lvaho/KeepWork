@@ -4,7 +4,6 @@ package com.zjc.seckilldemo.service.impl;
 import com.zjc.seckilldemo.service.IMethodnameService;
 import com.zjc.seckilldemo.service.IScreenService;
 import com.zjc.seckilldemo.service.IUserService;
-import com.zjc.seckilldemo.util.ListUtil;
 import com.zjc.seckilldemo.vo.*;
 import org.apache.ibatis.annotations.Select;
 import org.aspectj.lang.ProceedingJoinPoint;

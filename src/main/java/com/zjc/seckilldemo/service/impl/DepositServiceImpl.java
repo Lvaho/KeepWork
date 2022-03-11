@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo.service.impl;
 
+import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.payment.common.models.AlipayTradeQueryResponse;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * <p>
@@ -122,6 +124,34 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
             depositByIdentity.setDeposit(bigDecimal);
             depositMapper.updateDepositByIdentity(depositByIdentity);
             return "success";
+        }
+        return "fail";
+    }
+
+    @Override
+    public String receiveArsycMsg(Map<String, String> params) throws Exception {
+        String out_trade_no = params.get("out_trade_no");
+        String tradestatus = params.get("trade_status");
+        RechargeOrderVo rechargeOrderByOrderNo = depositOrderMapper.findRechargeOrderByOrderNo(out_trade_no);
+        String identity = rechargeOrderByOrderNo.getIdentity();
+        Boolean verifyNotify = Factory.Payment.Common().verifyNotify(params);
+        if (verifyNotify){
+            if (tradestatus.equals("TRADE_SUCCESS") & rechargeOrderByOrderNo.getStatus().equals("1")){
+                rechargeOrderByOrderNo.setStatus("2");
+                rechargeOrderByOrderNo.setTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+                depositOrderMapper.updateRechargeOrderByOrderNo(rechargeOrderByOrderNo);
+                Deposit depositByIdentity = depositMapper.findDepositByIdentity(identity);
+                String total_amount = rechargeOrderByOrderNo.getTotal_amount();
+                BigDecimal bigDecimal = BigDecimal.valueOf(Long.valueOf(total_amount));
+                BigDecimal deposit = depositByIdentity.getDeposit();
+                bigDecimal = bigDecimal.add(deposit);
+                depositByIdentity.setDeposit(bigDecimal);
+                depositMapper.updateDepositByIdentity(depositByIdentity);
+                return "success";
+            }
+        }else {
+            System.out.println("验签不通过");
+            return "fail";
         }
         return "fail";
     }

@@ -12,6 +12,7 @@ import com.zjc.seckilldemo.mapper.DepositOrderMapper;
 import com.zjc.seckilldemo.pojo.Deposit;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IDepositService;
+import com.zjc.seckilldemo.util.AlipayHttpUtil;
 import com.zjc.seckilldemo.vo.DepositVo;
 import com.zjc.seckilldemo.vo.RechargeOrderVo;
 import com.zjc.seckilldemo.vo.RespBean;
@@ -104,64 +105,29 @@ public class DepositController {
         return depositService.SendRequestToAlipay(depositVo,user,requestURL);
     }
 
+    /**
+     * 兜底方案，如果没有接收到异步返回则直接主动查询
+     * @param out_trade_no
+     * @return
+     * @throws Exception
+     */
     @ResponseBody
     @RequestMapping(value = "/checkOrder",method = RequestMethod.GET)
     public String checkOrder(String out_trade_no) throws Exception {
-
             return depositService.checkOrderAndrecharge(out_trade_no);
     }
 
+    /**
+     * 接收支付宝的异步回调并且充值余额
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/receiveArsycMsg",method = RequestMethod.POST)
     @ResponseBody
-    public String receiveArsycMsg(HttpServletRequest request) {
-        Map<String, String> params = convertRequestParamsToMap(request);
-        try{
-            String outTradeNo = params.get("out_trade_no");
-            String totalamount = params.get("total_amount");
-            String timestamp = params.get("notify_time");
-            RechargeOrderVo rechargeOrderByOrderNo = depositOrderMapper.findRechargeOrderByOrderNo(outTradeNo);
-            if (rechargeOrderByOrderNo.getOut_trade_no().equals(outTradeNo) & Integer.parseInt(rechargeOrderByOrderNo.getStatus()) == 1 & rechargeOrderByOrderNo.getTotal_amount().equals(totalamount)){
-                rechargeOrderByOrderNo.setStatus("2");
-                rechargeOrderByOrderNo.setTimestamp(timestamp);
-                DepositVo depositVo = new DepositVo();
-                BigDecimal bd=new BigDecimal(totalamount);
-                depositVo.setTotal(bd);
-                String identity = rechargeOrderByOrderNo.getIdentity();
-                depositVo.setIdentity(identity);
-                depositService.recharge(depositVo);
-                depositOrderMapper.updateRechargeOrderByOrderNo(rechargeOrderByOrderNo);
-                System.out.println("成功接收回调");
-                return "success";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "fail";
-    }
-
-    // 将request中的参数转换成Map
-    private static Map<String, String> convertRequestParamsToMap(HttpServletRequest request) {
-        Map<String, String> retMap = new HashMap<String, String>();
-
-        Set<Map.Entry<String, String[]>> entrySet = request.getParameterMap().entrySet();
-
-        for (Map.Entry<String, String[]> entry : entrySet) {
-            String name = entry.getKey();
-            String[] values = entry.getValue();
-            int valLen = values.length;
-
-            if (valLen == 1) {
-                retMap.put(name, values[0]);
-            } else if (valLen > 1) {
-                StringBuilder sb = new StringBuilder();
-                for (String val : values) {
-                    sb.append(",").append(val);
-                }
-                retMap.put(name, sb.toString().substring(1));
-            } else {
-                retMap.put(name, "");
-            }
-        }
-        return retMap;
+    public String receiveArsycMsg(HttpServletRequest request) throws Exception {
+        System.out.println("接收到异步回调");
+        Map<String, String> params = AlipayHttpUtil.convertRequestParamsToMap(request);
+        return depositService.receiveArsycMsg(params);
     }
 }

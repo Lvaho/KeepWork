@@ -7,6 +7,8 @@ import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.vo.DepositVo;
 import com.zjc.seckilldemo.vo.RespBean;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -40,4 +42,8 @@ public interface IDepositService extends IService<Deposit> {
      * @return
      */
     public String checkOrderAndrecharge(String out_trade_no) throws Exception;
+    /**
+     *
+     */
+    public String receiveArsycMsg(Map<String, String> params) throws Exception;
 }

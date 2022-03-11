@@ -21,7 +21,7 @@ public class DepositOrderServiceImpl extends ServiceImpl<DepositOrderMapper, Dep
     @Autowired
     private DepositOrderMapper depositOrderMapper;
     /**
-     * 创建数据库充值订单
+     * 创建数据库充值订单，订单状态为1（未支付）
      * @param depositVo
      * @param orderNo
      */

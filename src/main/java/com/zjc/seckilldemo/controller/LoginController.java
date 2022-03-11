@@ -47,6 +47,12 @@ public class LoginController {
         return userService.login(request, response, loginVo);
     }
 
+    /**
+     * 前往登陆后页面
+     * @param model
+     * @param user
+     * @return
+     */
     @ScreenAnnotation
     @ApiOperation(value = "登陆后页面")
     @RequestMapping(value = "/logined",method = RequestMethod.GET)

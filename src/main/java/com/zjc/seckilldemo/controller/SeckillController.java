@@ -110,6 +110,10 @@ public class SeckillController implements InitializingBean {
         return RespBean.success(0);
     }
 
+    /**
+     * 提前存储商品信息
+     * @throws Exception
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         List<GoodsVo> list = goodsService.findGoodsVo();

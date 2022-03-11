@@ -27,6 +27,11 @@ public class MethodnameServiceImpl extends ServiceImpl<MethodnameMapper, Methodn
     @Autowired
     private MethodnameMapper methodnameMapper;
 
+    /**
+     * 根据接口名查询接口的限制
+     * @param method_name
+     * @return
+     */
     @Override
     public List<InterfaceControlVo> findInterfaceControlVobyInterfaceName(String method_name) {
         QueryWrapper<Methodname> queryWrapper = new QueryWrapper<>();
@@ -35,6 +40,11 @@ public class MethodnameServiceImpl extends ServiceImpl<MethodnameMapper, Methodn
         return methodnameMapper.findInterfaceControlVobyInderfaceName(methodname.getId());
     }
 
+    /**
+     * 检查接口是否需要筛选
+     * @param method_name
+     * @return
+     */
     public boolean checkIfInterfaceNeedScreen(String method_name){
         Map<String,Object> map = new HashMap<>();
         map.put("method_name",method_name);
