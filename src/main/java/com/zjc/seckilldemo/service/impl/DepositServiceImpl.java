@@ -1,6 +1,6 @@
 package com.zjc.seckilldemo.service.impl;
 
-import com.alipay.api.internal.util.AlipaySignature;
+
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.payment.common.models.AlipayTradeQueryResponse;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
@@ -154,5 +154,13 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
             return "fail";
         }
         return "fail";
+    }
+
+    @Override
+    public RespBean getDeposit(User user) {
+        if (user==null){
+            return RespBean.error(RespBeanEnum.SESSION_ERROR);
+        }
+        return RespBean.success(depositMapper.findDepositByIdentity(user.getIdentity()));
     }
 }

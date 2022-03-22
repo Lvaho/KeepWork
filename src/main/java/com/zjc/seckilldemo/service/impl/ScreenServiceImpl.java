@@ -39,6 +39,7 @@ public class ScreenServiceImpl  implements IScreenService {
         if (methodnameService.checkIfInterfaceNeedScreen(method_name)) {
             List<InterfaceControlVo> interfaceControlVobyInterfaceName = methodnameService.findInterfaceControlVobyInterfaceName(method_name);
             List<ViolationRecordVo> violationRecordVobyIdentity = userService.findViolationRecordVobyIdentity(identity);
+            //有没有更优雅的算法来比对List<Object>中相同的属性呢？
             Iterator<InterfaceControlVo> controlVoIterator = interfaceControlVobyInterfaceName.iterator();
             Iterator<ViolationRecordVo> recordVoIterator = violationRecordVobyIdentity.iterator();
             StringBuilder controlVo = new StringBuilder();

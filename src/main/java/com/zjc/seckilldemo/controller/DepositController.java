@@ -2,11 +2,7 @@ package com.zjc.seckilldemo.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayTradeQueryRequest;
-import com.alipay.api.response.AlipayTradeQueryResponse;
+
 import com.zjc.seckilldemo.mapper.DepositMapper;
 import com.zjc.seckilldemo.mapper.DepositOrderMapper;
 import com.zjc.seckilldemo.pojo.Deposit;
@@ -129,5 +125,13 @@ public class DepositController {
         System.out.println("接收到异步回调");
         Map<String, String> params = AlipayHttpUtil.convertRequestParamsToMap(request);
         return depositService.receiveArsycMsg(params);
+    }
+    /**
+     * 获取余额
+     */
+    @RequestMapping(value = "/getDeposit",method = RequestMethod.GET)
+    @ResponseBody
+    public RespBean getDeposit(User user){
+        return depositService.getDeposit(user);
     }
 }

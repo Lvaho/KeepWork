@@ -46,4 +46,10 @@ public interface IDepositService extends IService<Deposit> {
      *
      */
     public String receiveArsycMsg(Map<String, String> params) throws Exception;
+
+    /**
+     * 获取余额
+     * @return
+     */
+    public RespBean getDeposit(User user);
 }

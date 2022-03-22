@@ -163,12 +163,6 @@
             <artifactId>alipay-easysdk</artifactId>
             <version>2.2.1</version>
         </dependency>
-        <!--支付宝验签-->
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <version>4.22.37.ALL</version>
-        </dependency>
         <!--AOP-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
