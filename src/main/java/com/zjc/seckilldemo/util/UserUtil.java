@@ -23,7 +23,7 @@ import java.util.List;
 public class UserUtil {
     private static void createUser(int count) throws Exception {
         List<User> users = new ArrayList<>(count);
-        //生成用户
+        // 生成用户
         for (int i = 0; i < count; i++) {
             User user = new User();
             user.setId(String.valueOf(13000000000L + i));
@@ -36,25 +36,25 @@ public class UserUtil {
             users.add(user);
         }
         System.out.println("create user");
-        //插入数据库
-        Connection conn = getConn();
-        String sql = "insert into t_user(login_count, Nickname, register_date, salt, password, id, identity)values(?,?,?,?,?,?,?)";
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            pstmt.setInt(1, user.getLoginCount());
-            pstmt.setString(2, user.getNickname());
-            pstmt.setTimestamp(3, new Timestamp(user.getRegisterDate().getTime()));
-            pstmt.setString(4, user.getSalt());
-            pstmt.setString(5, user.getPassword());
-            pstmt.setLong(6,Long.parseLong(user.getId()));
-            pstmt.setString(7,user.getIdentity());
-            pstmt.addBatch();
-        }
-        pstmt.executeBatch();
-        pstmt.close();
-        conn.close();
-        System.out.println("insert to db");
+        ////插入数据库
+        //Connection conn = getConn();
+        //String sql = "insert into t_user(login_count, Nickname, register_date, salt, password, id, identity)values(?,?,?,?,?,?,?)";
+        //PreparedStatement pstmt = conn.prepareStatement(sql);
+        //for (int i = 0; i < users.size(); i++) {
+        //    User user = users.get(i);
+        //    pstmt.setInt(1, user.getLoginCount());
+        //    pstmt.setString(2, user.getNickname());
+        //    pstmt.setTimestamp(3, new Timestamp(user.getRegisterDate().getTime()));
+        //    pstmt.setString(4, user.getSalt());
+        //    pstmt.setString(5, user.getPassword());
+        //    pstmt.setLong(6,Long.parseLong(user.getId()));
+        //    pstmt.setString(7,user.getIdentity());
+        //    pstmt.addBatch();
+        //}
+        //pstmt.executeBatch();
+        //pstmt.close();
+        //conn.close();
+        //System.out.println("insert to db");
         //登录，生成token
         String urlString = "http://localhost:8081/login/doLogin";
         File file = new File("C:\\Users\\Administrator\\Desktop\\config.txt");

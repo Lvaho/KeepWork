@@ -28,4 +28,5 @@ public interface IGoodsService extends IService<Goods> {
      */
     GoodsVo findGoodsVoByGoodsId(Integer goodsId);
 
+    void reloadstock();
 }

@@ -2,7 +2,9 @@ package com.zjc.seckilldemo.service.impl;
 
 
 import com.alipay.easysdk.factory.Factory;
+import com.alipay.easysdk.payment.app.models.AlipayTradeAppPayResponse;
 import com.alipay.easysdk.payment.common.models.AlipayTradeQueryResponse;
+import com.alipay.easysdk.payment.facetoface.models.AlipayTradePayResponse;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zjc.seckilldemo.mapper.DepositMapper;
@@ -162,5 +164,18 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
         return RespBean.success(depositMapper.findDepositByIdentity(user.getIdentity()));
+    }
+
+    @Override
+    public RespBean generateOrderInfo(User user, BigDecimal chargenum) throws Exception {
+        String orderNo = OrderUtil.getOrderNo();
+        DepositVo depositVo = new DepositVo();
+        depositVo.setIdentity(user.getIdentity());
+        depositVo.setTotal(chargenum);
+        AlipayTradeAppPayResponse query = Factory.Payment
+                .App()
+                .pay(user.getIdentity(),orderNo,chargenum.toString());
+        depositOrderService.createOrder(depositVo,orderNo);
+        return RespBean.success(query);
     }
 }

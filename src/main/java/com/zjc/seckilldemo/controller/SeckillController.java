@@ -218,5 +218,8 @@ public class SeckillController implements InitializingBean {
         return RespBean.success(0);
     }
 
+    public Map<Integer, Boolean> getStockMap() {
+        return EmptyStockMap;
+    }
 }
 

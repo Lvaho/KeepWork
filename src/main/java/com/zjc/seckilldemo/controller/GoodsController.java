@@ -127,4 +127,11 @@ public class GoodsController {
         detailVo.setSecKillStatus(secKillStatus);
         return RespBean.success(detailVo);
     }
+
+    @RequestMapping(value = "/reload",method = RequestMethod.POST)
+    @ResponseBody
+    public String reloadstock(){
+        goodsService.reloadstock();
+        return "success";
+    }
 }

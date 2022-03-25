@@ -7,6 +7,7 @@ import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.vo.DepositVo;
 import com.zjc.seckilldemo.vo.RespBean;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -52,4 +53,12 @@ public interface IDepositService extends IService<Deposit> {
      * @return
      */
     public RespBean getDeposit(User user);
+
+    /**
+     * 处理移动端的余额充值请求，生成OrderInfo并返回
+     * @param user
+     * @param chargenum
+     * @return
+     */
+    RespBean generateOrderInfo(User user, BigDecimal chargenum) throws Exception;
 }

@@ -78,7 +78,7 @@ public class DepositController {
     }
 
     /**
-     * 跳转商品详情页
+     * 充值接口
      *
      * @param chargenum
      * @param user
@@ -133,5 +133,13 @@ public class DepositController {
     @ResponseBody
     public RespBean getDeposit(User user){
         return depositService.getDeposit(user);
+    }
+    /**
+     * 处理移动端的充值请求，生成OrderInfo
+     */
+    @RequestMapping(value = "/doRechargemob",method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean dorechargemob(User user,BigDecimal chargenum) throws Exception {
+        return depositService.generateOrderInfo(user,chargenum);
     }
 }
