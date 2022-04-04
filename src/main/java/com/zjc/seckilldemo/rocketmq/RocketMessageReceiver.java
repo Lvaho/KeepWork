@@ -1,6 +1,7 @@
 package com.zjc.seckilldemo.rocketmq;
 
 
+import com.zjc.seckilldemo.pojo.Order;
 import com.zjc.seckilldemo.pojo.SeckillMessage;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IGoodsService;
@@ -44,6 +45,9 @@ public class RocketMessageReceiver implements RocketMQListener<String> {
         if (!StringUtils.isEmpty(seckillOrderJson)) {
             return ;
         }
-        orderService.seckill(user, goods);
+        Order seckill = orderService.seckill(user, goods);
+        if (seckill != null){
+        orderService.payseckillOrder(user,seckill.getId());
+        }
     }
 }

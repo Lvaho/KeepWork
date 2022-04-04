@@ -29,6 +29,7 @@ public enum RespBeanEnum {
     //余额模块
     CHARGENUM_SMALLER_THAN_ZERO(500601,"充值金额小于0"),
     DEPOSIT_NOT_ENOUGH_TO_PAY_ORDER(500602,"余额不足以支付订单"),
+    SETTLEMENT_FAILED(500603,"秒杀订单结算失败"),
     //准入初筛模块
     USER_DEFAULTER(500701,"用户被列入失信人名单"),
     USER_WORKSTATR_BAD(500702,"用户工作状态异常"),

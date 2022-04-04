@@ -31,6 +31,9 @@ import org.springframework.util.StringUtils;
 import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.TimeUnit;
 
 
@@ -43,7 +46,6 @@ import java.util.concurrent.TimeUnit;
  * @since 2021-12-12
  */
 @Service
-@Transactional
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
     @Autowired
     private ISeckillGoodsService seckillGoodsService;
@@ -59,6 +61,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private DepositMapper depositMapper;
 
     @Override
+    @Transactional
     public Order seckill(User user, GoodsVo goods) {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         //秒杀商品表减库存
@@ -152,6 +155,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @return
      */
     @Override
+    @Transactional
     public RespBean payseckillOrder(User user, Integer orderid) {
         //未获取到用户Token
         if (user == null){
@@ -185,10 +189,31 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //TO DO
         //成功
         if (i == 1 && j ==1){
-            return RespBean.success();
+            return RespBean.success("订单支付成功");
         }
         //未知错误
         return RespBean.error(RespBeanEnum.ORDER_PAY_FAIL);
+    }
+
+    @Override
+    @Transactional
+    public RespBean settlement() {
+        BigDecimal settlementtotal =BigDecimal.ZERO;
+        List<Order> selectallpayedorder = orderMapper.selectallpayedorder();
+        for (Order order : selectallpayedorder) {
+            settlementtotal=settlementtotal.add(order.getGoodsPrice());
+            order.setStatus(2);
+            orderMapper.updateById(order);
+        }
+        Deposit deposit = depositMapper.selectById(1);
+        BigDecimal deposit1 = deposit.getDeposit();
+        deposit1=deposit1.add(settlementtotal);
+        deposit.setDeposit(deposit1);
+        int i = depositMapper.updateById(deposit);
+        if (i==1){
+            return RespBean.success();
+        }
+        return RespBean.error(RespBeanEnum.SETTLEMENT_FAILED);
     }
 
 

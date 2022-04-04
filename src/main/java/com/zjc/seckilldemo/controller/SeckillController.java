@@ -97,11 +97,11 @@ public class SeckillController implements InitializingBean {
         }
         //预减库存
         //Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
-        Long stocklong = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
-        int stock=stocklong.intValue();
-        if (stock < 0) {
+        Long stock = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
+        //int stock=stocklong.intValue();
+        if (stock < 0L) {
             EmptyStockMap.put(goodsId,true);
-            valueOperations.increment("seckillGoods:" + goodsId);
+            valueOperations.set("seckillGoods:"+goodsId,0);
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         // 请求入队，立即返回排队中
@@ -203,12 +203,11 @@ public class SeckillController implements InitializingBean {
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         //预减库存
-        Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
-        //Long stocklong = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
-        //int stock=stocklong.intValue();
+        //Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
+        Long stock = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
         if (stock < 0L) {
             EmptyStockMap.put(goodsId,true);
-            valueOperations.increment("seckillGoods:" + goodsId);
+            valueOperations.set("seckillGoods:"+goodsId,0);
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         // 请求入队，立即返回排队中

@@ -53,5 +53,11 @@ public class OrderController {
     public RespBean payorder(User user,Integer orderId){
         return orderService.payseckillOrder(user,orderId);
     }
+    /**
+     * 结算订单
+     */
+    @RequestMapping(value = "/settlement",method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean settlement(){return orderService.settlement();}
 
 }

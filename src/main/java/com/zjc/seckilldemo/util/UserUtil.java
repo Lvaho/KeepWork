@@ -56,7 +56,7 @@ public class UserUtil {
         //conn.close();
         //System.out.println("insert to db");
         //登录，生成token
-        String urlString = "http://localhost:8081/login/doLogin";
+        String urlString = "http://web.keepwork.xyz/login/doLogin";
         File file = new File("C:\\Users\\Administrator\\Desktop\\config.txt");
         if (file.exists()) {
             file.delete();
@@ -107,7 +107,7 @@ public class UserUtil {
         return DriverManager.getConnection(url, username, password);
     }
     public static void main(String[] args) throws Exception {
-        createUser(2000);
+        createUser(5000);
     }
 
 }

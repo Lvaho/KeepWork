@@ -51,4 +51,10 @@ public interface IOrderService extends IService<Order> {
      * @return Respbean
      */
     RespBean payseckillOrder(User user, Integer orderid);
+
+    /**
+     * 结算订单
+     * @return
+     */
+    RespBean settlement();
 }

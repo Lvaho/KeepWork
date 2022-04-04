@@ -163,6 +163,12 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
         if (user==null){
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
+        if (depositMapper.findDepositByIdentity(user.getIdentity())==null){
+            Deposit deposit =new Deposit();
+            deposit.setIdentity(user.getIdentity());
+            deposit.setDeposit(BigDecimal.ZERO);
+            depositMapper.insert(deposit);
+        }
         return RespBean.success(depositMapper.findDepositByIdentity(user.getIdentity()));
     }
 
