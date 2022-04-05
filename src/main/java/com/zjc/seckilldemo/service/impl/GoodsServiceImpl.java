@@ -1,11 +1,15 @@
 package com.zjc.seckilldemo.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zjc.seckilldemo.aop.ScreenAnnotation;
 import com.zjc.seckilldemo.controller.SeckillController;
 import com.zjc.seckilldemo.mapper.GoodsMapper;
 import com.zjc.seckilldemo.pojo.Goods;
+import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IGoodsService;
 import com.zjc.seckilldemo.vo.GoodsVo;
+import com.zjc.seckilldemo.vo.RespBean;
+import com.zjc.seckilldemo.vo.RespBeanEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -35,7 +39,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return
      */
     @Override
-    public List<GoodsVo> findGoodsVo() {
+    @ScreenAnnotation
+    public List<GoodsVo> findGoodsVo(User user) {
         return goodsMapper.findGoodsVo();
     }
 
@@ -51,7 +56,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     public void reloadstock() {
-        List<GoodsVo> list = findGoodsVo();
+        List<GoodsVo> list = goodsMapper.findGoodsVo();
         if (CollectionUtils.isEmpty(list)) {
             return;
         }
@@ -61,6 +66,11 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             EmptyStockMap.put(goodsVo.getId(), false);
         });
         System.out.println("库存刷新成功");
+    }
+
+    @Override
+    public List<GoodsVo> findGoodsVo() {
+        return goodsMapper.findGoodsVo();
     }
 
 

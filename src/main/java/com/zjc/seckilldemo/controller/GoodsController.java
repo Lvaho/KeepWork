@@ -7,6 +7,7 @@ import com.zjc.seckilldemo.service.IUserService;
 import com.zjc.seckilldemo.vo.DetailVo;
 import com.zjc.seckilldemo.vo.GoodsVo;
 import com.zjc.seckilldemo.vo.RespBean;
+import com.zjc.seckilldemo.vo.RespBeanEnum;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -84,9 +85,11 @@ public class GoodsController {
     @ApiOperation(value = "获取秒杀商品")
     @RequestMapping(value = "/getGoods",method = RequestMethod.GET)
     @ResponseBody
-    @ScreenAnnotation
-    public List<GoodsVo> getGoods(Model model, User user) {
-        return goodsService.findGoodsVo();
+    public RespBean getGoods(Model model, User user) {
+        if (goodsService.findGoodsVo(user)==null){
+            return RespBean.error(RespBeanEnum.USER_ACTION_REFUSE,goodsService.findGoodsVo());
+        }
+        return RespBean.success(goodsService.findGoodsVo());
     }
 
 

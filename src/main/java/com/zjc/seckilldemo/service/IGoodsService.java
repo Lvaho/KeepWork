@@ -3,7 +3,9 @@ package com.zjc.seckilldemo.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import com.zjc.seckilldemo.pojo.Goods;
+import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.vo.GoodsVo;
+import com.zjc.seckilldemo.vo.RespBean;
 
 import java.util.List;
 
@@ -17,10 +19,10 @@ import java.util.List;
  */
 public interface IGoodsService extends IService<Goods> {
     /**
-     * 获取商品列表
+     * 获取商品列表(筛选)
      * @return
      */
-    List<GoodsVo> findGoodsVo();
+    List<GoodsVo> findGoodsVo(User user);
     /**
      * 根据商品id获取商品详情
      * @param goodsId
@@ -32,4 +34,10 @@ public interface IGoodsService extends IService<Goods> {
      * 重载缓存
      */
     void reloadstock();
+
+    /**
+     * 获取商品列表
+     * @return
+     */
+    List<GoodsVo> findGoodsVo();
 }

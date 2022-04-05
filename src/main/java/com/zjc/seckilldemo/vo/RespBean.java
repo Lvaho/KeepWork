@@ -37,6 +37,16 @@ public class RespBean {
         return new RespBean(respBeanEnum.getCode(), respBeanEnum.getMessage(),
                 null);
     }
+    /**
+     * 失败返回结果
+     *
+     * @param respBeanEnum
+     * @return
+     */
+    public static RespBean error(RespBeanEnum respBeanEnum,Object obj) {
+        return new RespBean(respBeanEnum.getCode(), respBeanEnum.getMessage(),
+                obj);
+    }
 
 }
 
