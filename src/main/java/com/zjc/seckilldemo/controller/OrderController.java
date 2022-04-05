@@ -7,6 +7,7 @@ import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.vo.OrderDetailVo;
 import com.zjc.seckilldemo.vo.RespBean;
 import com.zjc.seckilldemo.vo.RespBeanEnum;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
+    @ApiOperation(value = "根据秒杀订单id获取订单详情")
     @ScreenAnnotation
     @RequestMapping(value = "/detail",method = RequestMethod.GET)
     @ResponseBody
@@ -48,6 +50,7 @@ public class OrderController {
      * @param orderId
      * @Return RespBean
      */
+    @ApiOperation(value = "支付秒杀订单的兜底方案，手动进行支付")
     @RequestMapping(value = "/payorder",method = RequestMethod.POST)
     @ResponseBody
     public RespBean payorder(User user,Integer orderId){

@@ -134,6 +134,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return orderId:成功，-1：秒杀失败，0：排队中
      */
+    @ApiOperation(value = "获取秒杀订单ID")
     @RequestMapping(value = "/result", method = RequestMethod.GET)
     @ResponseBody
     public RespBean getResult(User user, Integer goodsId) {
@@ -151,6 +152,7 @@ public class SeckillController implements InitializingBean {
      * @param goodsId
      * @return
      */
+    @ApiOperation(value = "在安全秒杀之前获取秒杀路径")
     @ScreenAnnotation
     @AccessLimit(second=5,maxCount=5,needLogin=true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)

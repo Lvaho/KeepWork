@@ -1,5 +1,6 @@
 package com.zjc.seckilldemo.controller;
 
+import com.zjc.seckilldemo.aop.ScreenAnnotation;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IGoodsService;
 import com.zjc.seckilldemo.service.IUserService;
@@ -50,6 +51,7 @@ public class GoodsController {
      *
      * @return
      */
+    @ApiOperation(value = "网页版前往商品详情界面")
     @RequestMapping(value = "/toList", produces = "text/html;charset=utf-8",method = RequestMethod.GET)
     @ResponseBody
     public String toLogin(HttpServletRequest request, HttpServletResponse
@@ -82,6 +84,7 @@ public class GoodsController {
     @ApiOperation(value = "获取秒杀商品")
     @RequestMapping(value = "/getGoods",method = RequestMethod.GET)
     @ResponseBody
+    @ScreenAnnotation
     public List<GoodsVo> getGoods(Model model, User user) {
         return goodsService.findGoodsVo();
     }
@@ -95,6 +98,7 @@ public class GoodsController {
      * @param goodsId
      * @return
      */
+    @ApiOperation(value = "网页版前往商品详情页")
     @RequestMapping(value = "/detail/{goodsId}",method = RequestMethod.GET)
     @ResponseBody
     public RespBean toDetail(HttpServletRequest request, HttpServletResponse
@@ -127,7 +131,7 @@ public class GoodsController {
         detailVo.setSecKillStatus(secKillStatus);
         return RespBean.success(detailVo);
     }
-
+    @ApiOperation(value = "重载Redis中的库存数量")
     @RequestMapping(value = "/reload",method = RequestMethod.POST)
     @ResponseBody
     public String reloadstock(){

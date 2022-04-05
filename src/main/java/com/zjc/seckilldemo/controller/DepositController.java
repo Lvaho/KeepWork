@@ -107,6 +107,7 @@ public class DepositController {
      * @return
      * @throws Exception
      */
+    @ApiOperation(value = "在没有接收到支付宝异步回调时的兜底方案，主动查询来充值余额")
     @ResponseBody
     @RequestMapping(value = "/checkOrder",method = RequestMethod.GET)
     public String checkOrder(String out_trade_no) throws Exception {
@@ -119,6 +120,7 @@ public class DepositController {
      * @return
      * @throws Exception
      */
+    @ApiOperation(value = "接收支付宝异步回调来实现余额充值")
     @RequestMapping(value = "/receiveArsycMsg",method = RequestMethod.POST)
     @ResponseBody
     public String receiveArsycMsg(HttpServletRequest request) throws Exception {
@@ -129,6 +131,7 @@ public class DepositController {
     /**
      * 获取余额
      */
+    @ApiOperation(value = "获取余额")
     @RequestMapping(value = "/getDeposit",method = RequestMethod.GET)
     @ResponseBody
     public RespBean getDeposit(User user){
@@ -137,6 +140,7 @@ public class DepositController {
     /**
      * 处理移动端的充值请求，生成OrderInfo
      */
+    @ApiOperation(value = "为移动端构建OrderInfo并返回")
     @RequestMapping(value = "/doRechargemob",method = RequestMethod.POST)
     @ResponseBody
     public RespBean dorechargemob(User user,BigDecimal chargenum) throws Exception {
