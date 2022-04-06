@@ -40,4 +40,11 @@ public class UserController {
     public String toRegister(){
         return "register";
     }
+
+    @ApiOperation(value = "获取用户信息")
+    @ResponseBody
+    @RequestMapping(value = "/getUserDetail",method = RequestMethod.GET)
+    public RespBean getUserDetail(User user){
+        return RespBean.success(user);
+    }
 }
