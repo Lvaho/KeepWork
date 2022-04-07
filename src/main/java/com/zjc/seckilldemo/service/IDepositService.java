@@ -30,7 +30,7 @@ public interface IDepositService extends IService<Deposit> {
      * @param depositVo
      * @return RespBean(code,message,obj==>html)
      */
-    public RespBean SendRequestToAlipay(DepositVo depositVo, User user,String returnURL) throws Exception;
+    public RespBean SendRequestToAlipay(DepositVo depositVo, User user,String returnURL,String notifyUrl) throws Exception;
     /**
      * 通过身份证查询余额
      * @param identity
@@ -60,5 +60,5 @@ public interface IDepositService extends IService<Deposit> {
      * @param chargenum
      * @return
      */
-    RespBean generateOrderInfo(User user, BigDecimal chargenum) throws Exception;
+    RespBean generateOrderInfo(User user, BigDecimal chargenum,String notifyUrl) throws Exception;
 }

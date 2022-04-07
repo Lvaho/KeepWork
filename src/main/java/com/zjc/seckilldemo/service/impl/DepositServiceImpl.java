@@ -69,7 +69,7 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
      * @throws Exception
      */
     @Override
-    public RespBean SendRequestToAlipay(DepositVo depositVo, User user,String returnUrl) throws Exception{
+    public RespBean SendRequestToAlipay(DepositVo depositVo, User user,String returnUrl,String notifyUrl) throws Exception{
         if (user == null){
             return RespBean.error(RespBeanEnum.SESSION_ERROR);
         }
@@ -81,6 +81,7 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
         AlipayTradePagePayResponse response = Factory
                 .Payment
                 .Page()
+                .asyncNotify(notifyUrl)
                 .pay(identity, orderNo,depositVo.getTotal().toString(),returnUrl);
         depositOrderService.createOrder(depositVo,orderNo);
         //return response.body;
@@ -173,13 +174,14 @@ public class DepositServiceImpl extends ServiceImpl<DepositMapper, Deposit> impl
     }
 
     @Override
-    public RespBean generateOrderInfo(User user, BigDecimal chargenum) throws Exception {
+    public RespBean generateOrderInfo(User user, BigDecimal chargenum,String notifyUrl) throws Exception {
         String orderNo = OrderUtil.getOrderNo();
         DepositVo depositVo = new DepositVo();
         depositVo.setIdentity(user.getIdentity());
         depositVo.setTotal(chargenum);
         AlipayTradeAppPayResponse query = Factory.Payment
                 .App()
+                .asyncNotify(notifyUrl)
                 .pay(user.getIdentity(),orderNo,chargenum.toString());
         depositOrderService.createOrder(depositVo,orderNo);
         return RespBean.success(query);

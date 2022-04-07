@@ -95,10 +95,13 @@ public class DepositController {
         String requestURL = request.getRequestURL().toString();
         requestURL=requestURL.substring(0,requestURL.length()-10);
         requestURL=requestURL+"checkOrder";
+        String notifyUrl = request.getRequestURL().toString();
+        notifyUrl=notifyUrl.substring(0,notifyUrl.length()-10);
+        notifyUrl=notifyUrl+"receiveArsycMsg";
         System.out.println(requestURL);
         depositVo.setIdentity(user.getIdentity());
         depositVo.setTotal(chargenum);
-        return depositService.SendRequestToAlipay(depositVo,user,requestURL);
+        return depositService.SendRequestToAlipay(depositVo,user,requestURL,notifyUrl);
     }
 
     /**
@@ -143,7 +146,10 @@ public class DepositController {
     @ApiOperation(value = "为移动端构建OrderInfo并返回")
     @RequestMapping(value = "/doRechargemob",method = RequestMethod.POST)
     @ResponseBody
-    public RespBean dorechargemob(User user,BigDecimal chargenum) throws Exception {
-        return depositService.generateOrderInfo(user,chargenum);
+    public RespBean dorechargemob(User user,BigDecimal chargenum,HttpServletRequest request) throws Exception {
+        String notifyUrl = request.getRequestURL().toString();
+        notifyUrl=notifyUrl.substring(0,notifyUrl.length()-10);
+        notifyUrl=notifyUrl+"receiveArsycMsg";
+        return depositService.generateOrderInfo(user,chargenum,notifyUrl);
     }
 }
