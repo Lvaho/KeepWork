@@ -14,6 +14,7 @@ import com.zjc.seckilldemo.service.IGoodsService;
 import com.zjc.seckilldemo.service.IOrderService;
 import com.zjc.seckilldemo.service.ISeckillGoodsService;
 import com.zjc.seckilldemo.service.ISeckillOrderService;
+import com.zjc.seckilldemo.util.DateUtil;
 import com.zjc.seckilldemo.util.JsonUtil;
 import com.zjc.seckilldemo.util.SM3Util;
 import com.zjc.seckilldemo.util.UUIDUtil;
@@ -169,7 +170,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             return RespBean.error(RespBeanEnum.ORDER_NOT_EXIST);
         }
         //订单已支付
-        if (order.getStatus() == 2 ){
+        if (order.getStatus() != 0 ){
             return RespBean.error(RespBeanEnum.ORDER_ALREADY_PAYED);
         }
         BigDecimal depositreduced = deposit.getDeposit().subtract(order.getGoodsPrice());
@@ -182,9 +183,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         updatedeposit.eq("identity",identity).set("deposit",depositreduced);
         Integer i = depositMapper.update(null,updatedeposit);
         //修改订单状态
-        UpdateWrapper<Order> updateOrder = new UpdateWrapper<>();
-        updateOrder.eq("id",orderid).set("status",1);
-        Integer j = orderMapper.update(null,updateOrder);
+        order.setStatus(1);
+        order.setPayDate(DateUtil.getNowTime());
+        int j = orderMapper.updateById(order);
         //为银行账户添加对应资金
         //TO DO
         //成功

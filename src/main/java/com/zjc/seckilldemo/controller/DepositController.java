@@ -94,7 +94,7 @@ public class DepositController {
         //}
         String requestURL = request.getRequestURL().toString();
         requestURL=requestURL.substring(0,requestURL.length()-10);
-        requestURL=requestURL+"checkOrder";
+        requestURL=requestURL+"toDeposit";
         String notifyUrl = request.getRequestURL().toString();
         notifyUrl=notifyUrl.substring(0,notifyUrl.length()-10);
         notifyUrl=notifyUrl+"receiveArsycMsg";
@@ -148,7 +148,7 @@ public class DepositController {
     @ResponseBody
     public RespBean dorechargemob(User user,BigDecimal chargenum,HttpServletRequest request) throws Exception {
         String notifyUrl = request.getRequestURL().toString();
-        notifyUrl=notifyUrl.substring(0,notifyUrl.length()-10);
+        notifyUrl=notifyUrl.substring(0,notifyUrl.length()-13);
         notifyUrl=notifyUrl+"receiveArsycMsg";
         return depositService.generateOrderInfo(user,chargenum,notifyUrl);
     }

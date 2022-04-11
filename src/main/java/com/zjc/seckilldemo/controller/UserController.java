@@ -4,6 +4,7 @@ package com.zjc.seckilldemo.controller;
 
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IUserService;
+import com.zjc.seckilldemo.validation.IsMobile;
 import com.zjc.seckilldemo.vo.RespBean;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class UserController {
     @ApiOperation(value = "注册接口 注意：传进来的密码需要已经SM3加密以及加盐 手机号 身份证号都不能重复")
     @RequestMapping(value = "/doRegister",method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doRegister(String nickname, String mobile, String identity, String password) {
+    public RespBean doRegister(String nickname, @IsMobile String mobile, String identity, String password) {
         return iUserService.register(nickname,mobile,identity,password);
     }
 

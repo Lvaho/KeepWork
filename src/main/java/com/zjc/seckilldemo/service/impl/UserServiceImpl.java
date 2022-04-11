@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zjc.seckilldemo.exception.GlobalException;
+import com.zjc.seckilldemo.mapper.DepositMapper;
 import com.zjc.seckilldemo.mapper.MethodnameMapper;
 import com.zjc.seckilldemo.mapper.UserMapper;
+import com.zjc.seckilldemo.pojo.Deposit;
 import com.zjc.seckilldemo.pojo.Methodname;
 import com.zjc.seckilldemo.pojo.User;
 import com.zjc.seckilldemo.service.IUserService;
@@ -20,6 +22,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,6 +46,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
     private RedisTemplate redisTemplate;
     @Autowired
     private MethodnameMapper methodnameMapper;
+    @Autowired
+    private DepositMapper depositMapper;
     /**
      * 登录
      *
@@ -115,7 +120,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
             return RespBean.error(RespBeanEnum.ID_ALREADY_REGISTER);
         }else if(userMapper.selectById(mobile) != null) {
             return RespBean.error(RespBeanEnum.MOBILE_ALREADY_REGISTER);
-        }else {userMapper.insert(user);}
+        }else {
+            userMapper.insert(user);
+            Deposit deposit =new Deposit();
+            deposit.setDeposit(BigDecimal.ZERO);
+            deposit.setIdentity(user.getIdentity());
+            depositMapper.insert(deposit);
+        }
         return RespBean.success("注册成功");
     }
 
