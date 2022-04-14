@@ -4,5 +4,5 @@ if (redis.call('exists', KEYS[1]) == 1) then
       redis.call('incrby', KEYS[1], -1);
       return stock;
    end;
-    return -1;
+    return 0;
 end;

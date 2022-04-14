@@ -218,7 +218,7 @@ public final class CookieUtil {
             // 根据"."进行分割
             final String[] domains = serverName.split("\\.");
             int len = domains.length;
-            if (len > 3) {
+            if (len > 3 & domains[0]=="www") {
                 // www.xxx.com.cn
                 domainName = domains[len - 3] + "." + domains[len - 2] + "." +
                         domains[len - 1];

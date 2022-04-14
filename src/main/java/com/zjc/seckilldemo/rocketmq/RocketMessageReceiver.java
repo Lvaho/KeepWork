@@ -36,11 +36,6 @@ public class RocketMessageReceiver implements RocketMQListener<String> {
         if (goods.getStockCount() < 1) {
             return;
         }
-        //判断是否重复抢购
-        // SeckillOrder seckillOrder = seckillOrderService.getOne(newQueryWrapper<SeckillOrder> ().eq("user_id",
-        //       user.getId()).eq(
-        //       "goods_id",
-        //       goodsId));
         String seckillOrderJson = (String) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
         if (!StringUtils.isEmpty(seckillOrderJson)) {
             return ;

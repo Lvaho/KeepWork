@@ -65,29 +65,8 @@ public class SeckillController implements InitializingBean {
         if (!check){
             return RespBean.error(RespBeanEnum.REQUEST_ILLEGAL);
         }
-        /*GoodsVo goods = goodsService.findGoodsVoByGoodsId(goodsId);
-        //判断库存
-        if (goods.getStockCount() < 1) {
-            return RespBean.error(RespBeanEnum.EMPTY_STOCK);
-        }
         //判断是否重复抢购
-        // SeckillOrder seckillOrder = seckillOrderService.getOne(newQueryWrapper<SeckillOrder>().eq("user_id",
-                //       user.getId()).eq(
-                //       "goods_id",
-                //       goodsId));
-        String seckillOrderJson = (String) redisTemplate.opsForValue().get("order:" + user.getId() + ":" + goodsId);
-        if (!StringUtils.isEmpty(seckillOrderJson)) {
-            return RespBean.error(RespBeanEnum.REPEATE_ERROR);
-        }
-        Order order = orderService.seckill(user, goods);
-        if (null != order) {
-            return RespBean.success(order);
-        }
-        return RespBean.error(RespBeanEnum.ERROR);*/
-
-        //判断是否重复抢购
-        String seckillOrderJson = (String) valueOperations.get("order:" +
-                user.getId() + ":" + goodsId);
+        String seckillOrderJson = (String) valueOperations.get("order:" + user.getId() + ":" + goodsId);
         if (!StringUtils.isEmpty(seckillOrderJson)) {
             return RespBean.error(RespBeanEnum.REPEATE_ERROR);
         }
@@ -96,10 +75,8 @@ public class SeckillController implements InitializingBean {
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         //预减库存
-        //Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
         Long stock = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
-        //int stock=stocklong.intValue();
-        if (stock < 0L) {
+        if (stock <= 0L) {
             EmptyStockMap.put(goodsId,true);
             valueOperations.set("seckillGoods:"+goodsId,0);
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
@@ -153,7 +130,6 @@ public class SeckillController implements InitializingBean {
      * @return
      */
     @ApiOperation(value = "在安全秒杀之前获取秒杀路径")
-    @ScreenAnnotation
     @AccessLimit(second=5,maxCount=5,needLogin=true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody
@@ -166,7 +142,7 @@ public class SeckillController implements InitializingBean {
     }
 
 
-    @ApiOperation("为压力测试留下的无路径参数秒杀接口")
+    @ApiOperation("未隐藏秒杀地址的不安全秒杀接口")
     @RequestMapping(value = "/doSeckill", method = RequestMethod.POST)
     @ResponseBody
     public RespBean doSeckillfortest(User user, Integer goodsId) throws Exception {
@@ -207,14 +183,14 @@ public class SeckillController implements InitializingBean {
         //预减库存
         //Long stock = valueOperations.decrement("seckillGoods:" + goodsId);
         Long stock = (Long) redisTemplate.execute(script, Collections.singletonList("seckillGoods:" + goodsId), Collections.EMPTY_LIST);
-        if (stock < 0L) {
+        if (stock <= 0L) {
             EmptyStockMap.put(goodsId,true);
             valueOperations.set("seckillGoods:"+goodsId,0);
             return RespBean.error(RespBeanEnum.EMPTY_STOCK);
         }
         // 请求入队，立即返回排队中
         SeckillMessage message = new SeckillMessage(user, goodsId);
-        //mqSender.sendsecKillMessage(JsonUtil.object2JsonStr(message));
+        //发送RocketMQ消息
         messageSender.SendMessage(JsonUtil.object2JsonStr(message));
         return RespBean.success(0);
     }
