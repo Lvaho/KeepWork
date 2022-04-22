@@ -53,8 +53,8 @@ spring:
     #超时时间
     timeout: 10000ms
     #服务器地zhi
-    host: 172.31.45.133
-    #host: 127.0.0.1
+    #host: 172.31.45.133
+    host: 127.0.0.1
     #服务器端口
     port: 6379
     #数据库
@@ -83,11 +83,11 @@ mybatis-plus:
 
 
 #MyBatis SQL打印(方法接口所在的包，不是Mapper.xml所在的包)
-logging:
-  level:
-    com.zjc.seckilldemo.mapper: debug
+#logging:
+#  level:
+#    com.zjc.seckilldemo.mapper: debug
 rocketmq:
-  name-server: 172.31.45.133:9876
-  #name-server: 110.40.190.110:9876
+  #name-server: 172.31.45.133:9876
+  name-server: 110.40.190.110:9876
   producer:
     group: group1

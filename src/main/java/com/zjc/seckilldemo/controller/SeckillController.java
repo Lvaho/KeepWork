@@ -98,6 +98,7 @@ public class SeckillController implements InitializingBean {
             return;
         }
         list.forEach(goodsVo -> {
+            System.out.println("活动预热，将"+goodsVo.getId()+"号商品存入Redis，商品库存为"+goodsVo.getStockCount());
             redisTemplate.opsForValue().set("seckillGoods:" + goodsVo.getId(),
                     goodsVo.getStockCount());
             EmptyStockMap.put(goodsVo.getId(), false);
@@ -130,7 +131,7 @@ public class SeckillController implements InitializingBean {
      * @return
      */
     @ApiOperation(value = "在安全秒杀之前获取秒杀路径")
-    @AccessLimit(second=5,maxCount=5,needLogin=true)
+    //@AccessLimit(second=5,maxCount=5,needLogin=true)
     @RequestMapping(value = "/path", method = RequestMethod.GET)
     @ResponseBody
     public RespBean getPath(User user, Integer goodsId) {
